@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "kick": "node -r esm",
+    "format": "prettier --write \"{,!(node_modules|dist|build)/**/}*.*\""
+  },
+  "dependencies": {
+    "faunadb": "^4.5.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "esm": "^3.2.25",
+    "prettier": "^2.4.1"
+  }
+}

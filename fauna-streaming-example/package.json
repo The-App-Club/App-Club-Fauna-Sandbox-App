@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "chance": "^1.1.8",
+    "faker": "^5.1.0",
+    "faunadb": "^4.5.4",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "^5.0.1",
+    "react-toastify": "^8.2.0"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "setup": "node -r esm ./scripts/setup.js",
+    "populate": "node -r esm ./scripts/populate.js",
+    "fetch": "node -r esm ./scripts/getDocumentList",
+    "depopulate": "node -r esm ./scripts/depopulate.js",
+    "update": "node -r esm ./scripts/updateDocument.js",
+    "clean": "node -r esm ./scripts/clean.js",
+    "format": "prettier --write \"{,!(node_modules|dist|build)/**/}*.*\""
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "esm": "^3.2.25",
+    "prettier": "^2.6.2"
+  }
+}

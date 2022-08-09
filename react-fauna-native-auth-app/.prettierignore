@@ -1,0 +1,8 @@
+.gitignore
+.prettierignore
+.stylelintignore
+robots.txt
+*ico
+*svg
+*lock
+.env*

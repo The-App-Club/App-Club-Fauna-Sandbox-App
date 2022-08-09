@@ -1,0 +1,35 @@
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "serve": "next start",
+    "setup": "node -r esm kick/setup.js",
+    "clean": "node -r esm kick/clean.js",
+    "format": "prettier --write \"{,!(node_modules|dist|build)/**/}*.*\""
+  },
+  "dependencies": {
+    "@emotion/css": "^11.9.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.1",
+    "@mui/material": "^5.6.0",
+    "dayjs": "^1.11.0",
+    "faunadb": "^4.2.0",
+    "formik": "^2.2.9",
+    "framer-motion": "^6.2.9",
+    "graphql": "^15.5.0",
+    "graphql-request": "^3.4.0",
+    "next": "10.2.2",
+    "react": "17.0.2",
+    "react-cookie": "^4.1.1",
+    "react-dom": "17.0.2",
+    "react-toastify": "^8.2.0",
+    "swr": "^0.5.6",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.4.1"
+  }
+}

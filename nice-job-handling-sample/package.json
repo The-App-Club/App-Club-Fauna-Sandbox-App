@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "esm": "^3.2.25"
+  },
+  "dependencies": {
+    "q": "^1.5.1"
+  }
+}

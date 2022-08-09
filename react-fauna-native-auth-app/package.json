@@ -1,0 +1,57 @@
+{
+  "scripts": {
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "serve": "serve -s build -p 4400",
+    "format": "prettier --write \"{,!(node_modules|dist|build)/**/}*.*\"",
+    "lint": "stylelint --fix \"{,!(node_modules|dist|build)/**/}*.css*\" \"{,!(node_modules|dist|build)/**/}*.scss*\"",
+    "setup": "node -r esm src/fauna/setup.js",
+    "clean": "node -r esm src/fauna/clean.js"
+  },
+  "dependencies": {
+    "@emotion/css": "^11.9.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.6.1",
+    "dayjs": "^1.11.0",
+    "faunadb": "^4.5.2",
+    "formik": "^2.2.9",
+    "framer-motion": "^6.2.10",
+    "react": "^18.0.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
+    "unique-names-generator": "^4.7.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "esm": "^3.2.25",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.4.1",
+    "react-scripts": "5.0.1",
+    "serve": "^12.0.1",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^9.0.2",
+    "stylelint-config-recommended-scss": "^4.3.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.21.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
