@@ -18,6 +18,9 @@ import {
 } from '@mui/joy';
 import Spacer from '@/components/Spacer';
 
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const schema = yup.object({
   newShow: yup.string().required('必須入力です'),
 });
@@ -34,10 +37,22 @@ export default function Home() {
     formState: {errors},
   } = useForm({resolver: yupResolver(schema), mode: 'all'});
   const doSubmit = async (data) => {
-    setNewShow(data.newShow);
-    const response = await addShows(data.newShow);
-    setNewShow('');
-    mutateShows();
+    try {
+      setNewShow(data.newShow);
+      const {data: result} = await addShows(data.newShow);
+      setNewShow('');
+      mutateShows();
+      toast(`"${result.data.title}"を追加しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const {
@@ -53,23 +68,27 @@ export default function Home() {
     }
   });
 
-  const handleAddShow = async () => {
-    try {
-      const response = await addShows();
-      console.log(response);
-      setNewShow('');
-      mutateShows();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleUpdateShow = async (e, show) => {
     const {data} = show;
     try {
-      const response = await updateShow({...data, watched: e.target.checked});
-      console.log(response);
+      const {data: result} = await updateShow({
+        ...data,
+        watched: e.target.checked,
+      });
       mutateShows();
+      toast(
+        `${result.data.title}を"${
+          result.data.watched ? '視聴済' : '未視聴'
+        }"に更新しました`,
+        {
+          className: cx(
+            `text-sm font-bold`,
+            css`
+              font-family: 'Noto Sans JP', sans-serif;
+            `
+          ),
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -78,9 +97,17 @@ export default function Home() {
   const handleDeleteShow = async (show) => {
     const {data} = show;
     try {
-      const response = await deleteShow({...data});
-      console.log(response);
+      const {data: result} = await deleteShow({...data});
+      console.log(result);
       mutateShows();
+      toast(`"${result.data.title}"を削除しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
     } catch (error) {
       console.log(error);
     }
@@ -143,6 +170,7 @@ export default function Home() {
 
   return (
     <Box className="flex justify-start items-center min-h-screen flex-col">
+      <ToastContainer />
       <form className="max-w-xs w-full" onSubmit={handleSubmit(doSubmit)}>
         <Box className={`sticky top-0 bg-white z-10 w-full py-2`}>
           <Typography
