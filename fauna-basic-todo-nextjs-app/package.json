@@ -3,8 +3,8 @@
     "dev": "next dev",
     "build": "next build",
     "serve": "next start",
+    "lint": "next lint",
     "format": "prettier --write \"{,!(node_modules|dist|build)/**/}*.*\"",
-    "lint:css": "stylelint --fix \"{,!(node_modules|dist|build)/**/}*.css*\" \"{,!(node_modules|dist|build)/**/}*.scss*\"",
     "setup": "node -r esm fauna/setup.js",
     "depopulate": "node -r esm fauna/depopulate.js"
   },
@@ -31,17 +31,18 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.38.0",
     "autoprefixer": "^10.4.13",
+    "eslint": "8.20.0",
+    "eslint-config-next": "12.2.3",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "esm": "^3.2.25",
     "postcss": "^8.4.18",
     "prettier": "^2.4.1",
     "sass": "^1.56.0",
     "serve": "^13.0.2",
-    "stylelint": "^13.13.1",
-    "stylelint-config-prettier": "^9.0.2",
-    "stylelint-config-recommended-scss": "^4.3.0",
-    "stylelint-order": "^4.1.0",
-    "stylelint-scss": "^3.21.0",
     "tailwindcss": "^3.2.1"
   }
 }

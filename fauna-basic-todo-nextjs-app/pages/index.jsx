@@ -36,20 +36,32 @@ export default function Home() {
     setValue,
     formState: {errors},
   } = useForm({resolver: yupResolver(schema), mode: 'all'});
-  const doSubmit = async (data) => {
+  const doSubmit = async ({newShow}) => {
     try {
-      setNewShow(data.newShow);
-      const {data: result} = await addShows(data.newShow);
-      setNewShow('');
-      mutateShows();
-      toast(`"${result.data.title}"を追加しました`, {
-        className: cx(
-          `text-sm font-bold`,
-          css`
-            font-family: 'Noto Sans JP', sans-serif;
-          `
-        ),
-      });
+      setNewShow(newShow);
+      const {data: result, statusCode, message} = await addShows(newShow);
+      if (statusCode === 200) {
+        setNewShow('');
+        mutateShows();
+        toast(`"${result.data.title}"を追加しました`, {
+          className: cx(
+            `text-sm font-bold`,
+            css`
+              font-family: 'Noto Sans JP', sans-serif;
+            `
+          ),
+        });
+      } else {
+        toast(`"${result.title}"の追加に失敗しました`, {
+          className: cx(
+            `text-sm font-bold`,
+            css`
+              font-family: 'Noto Sans JP', sans-serif;
+            `
+          ),
+        });
+        console.log(message);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -71,43 +83,67 @@ export default function Home() {
   const handleUpdateShow = async (e, show) => {
     const {data} = show;
     try {
-      const {data: result} = await updateShow({
+      const {
+        data: result,
+        statusCode,
+        message,
+      } = await updateShow({
         ...data,
         watched: e.target.checked,
       });
-      mutateShows();
-      toast(
-        `${result.data.title}を"${
-          result.data.watched ? '視聴済' : '未視聴'
-        }"に更新しました`,
-        {
+      if (statusCode === 200) {
+        mutateShows();
+        toast(
+          `${result.data.title}を"${
+            result.data.watched ? '視聴済' : '未視聴'
+          }"に更新しました`,
+          {
+            className: cx(
+              `text-sm font-bold`,
+              css`
+                font-family: 'Noto Sans JP', sans-serif;
+              `
+            ),
+          }
+        );
+      } else {
+        toast(`"${result.title}"の更新に失敗しました`, {
           className: cx(
             `text-sm font-bold`,
             css`
               font-family: 'Noto Sans JP', sans-serif;
             `
           ),
-        }
-      );
+        });
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleDeleteShow = async (show) => {
-    const {data} = show;
+  const handleDeleteShow = async ({data}) => {
     try {
-      const {data: result} = await deleteShow({...data});
-      console.log(result);
-      mutateShows();
-      toast(`"${result.data.title}"を削除しました`, {
-        className: cx(
-          `text-sm font-bold`,
-          css`
-            font-family: 'Noto Sans JP', sans-serif;
-          `
-        ),
-      });
+      const {data: result, statusCode, message} = await deleteShow({...data});
+      if (statusCode === 200) {
+        mutateShows();
+        toast(`"${result.data.title}"を削除しました`, {
+          className: cx(
+            `text-sm font-bold`,
+            css`
+              font-family: 'Noto Sans JP', sans-serif;
+            `
+          ),
+        });
+      } else {
+        toast(`"${result.title}"の削除に失敗しました`, {
+          className: cx(
+            `text-sm font-bold`,
+            css`
+              font-family: 'Noto Sans JP', sans-serif;
+            `
+          ),
+        });
+      }
     } catch (error) {
       console.log(error);
     }

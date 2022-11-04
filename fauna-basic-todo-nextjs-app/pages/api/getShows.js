@@ -1,6 +1,6 @@
 import {FaunaDBQueryManager, q} from '../../fauna/config';
 
-export default async (req, res) => {
+const getShows = async (req, res) => {
   if (req.method == 'GET') {
     try {
       const response = await new FaunaDBQueryManager({}).client.query(
@@ -9,10 +9,16 @@ export default async (req, res) => {
           q.Lambda('X', q.Get(q.Var('X')))
         )
       );
-      res.status(200).json({data: response.data});
+      res
+        .status(200)
+        .json({data: response.data, message: `success`, statusCode: 200});
     } catch (error) {
-      console.log(error);
-      res.status(500).json({data: `something went wrong...`});
+      res.status(500).json({
+        data: `something went wrong...`,
+        message: error.description,
+        statusCode: error.requestResult.statusCode,
+      });
     }
   }
 };
+export default getShows;

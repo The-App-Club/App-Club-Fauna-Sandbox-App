@@ -4,63 +4,71 @@ import useSWR from 'swr';
 const useShow = () => {
   const [newShow, setNewShow] = useState('');
 
-  const getShows = async () => {
-    try {
-      const response = await fetch('/api/getShows', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const json = await response.json();
-      const {data} = {...json};
-      return data;
-    } catch (error) {
-      return error;
-    }
+  const getShows = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch('/api/getShows', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const json = await response.json();
+        const {data} = {...json};
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
-  const addShows = async (newShow) => {
-    try {
-      const response = await fetch('/api/addShows', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: newShow,
-        }),
-      });
-      const body = await response.json();
-      setNewShow('');
-      return body;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
+  const addShows = (newShow) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch('/api/addShow', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: newShow,
+          }),
+        });
+        const body = await response.json();
+        setNewShow('');
+        resolve(body);
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
   };
 
-  const updateShow = async (willUpdatedShow) => {
-    try {
-      const response = await fetch('/api/updateShow', {
-        method: 'POST',
-        body: JSON.stringify(willUpdatedShow),
-      });
-      const body = await response.json();
-      return body;
-    } catch (error) {
-      console.log(error);
-    }
+  const updateShow = (willUpdatedShow) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch('/api/updateShow', {
+          method: 'POST',
+          body: JSON.stringify(willUpdatedShow),
+        });
+        const body = await response.json();
+        resolve(body);
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
-  const deleteShow = async (willDeletedShow) => {
-    try {
-      const response = await fetch('/api/deleteShow', {
-        method: 'POST',
-        body: JSON.stringify(willDeletedShow),
-      });
-      const body = await response.json();
-      return body;
-    } catch (error) {
-      console.log(error);
-    }
+  const deleteShow = (willDeletedShow) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch('/api/deleteShow', {
+          method: 'POST',
+          body: JSON.stringify(willDeletedShow),
+        });
+        const body = await response.json();
+        resolve(body);
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
   return {
     newShow,

@@ -1,18 +1,12 @@
 import {FaunaDBQueryManager, q} from '../../fauna/config';
-
-const updateShow = async (req, res) => {
+const addShow = async (req, res) => {
   if (req.method == 'POST') {
-    const {title, watched} = {...JSON.parse(req.body)};
+    const {title} = {...JSON.parse(req.body)};
     try {
       const response = await new FaunaDBQueryManager({}).client.query(
-        q.Update(
-          q.Select(['ref'], q.Get(q.Match(q.Index('shows_by_title'), title))),
-          {
-            data: {
-              watched,
-            },
-          }
-        )
+        q.Create(q.Collection('shows'), {
+          data: {title, watched: false},
+        })
       );
       res
         .status(200)
@@ -27,4 +21,4 @@ const updateShow = async (req, res) => {
   }
 };
 
-export default updateShow;
+export default addShow;
