@@ -1,0 +1,20 @@
+mutation partialUpdateShow {
+  partialUpdateShow(id: "347475699180765775", data: {watched: true}) {
+    _id
+    _ts
+    title
+    watched
+  }
+}
+
+# Output
+# {
+#   "data": {
+#     "partialUpdateShow": {
+#       "_id": "347475699180765775",
+#       "_ts": 1667638897430000,
+#       "title": "映画『シドニアの騎士 あいつむぐほし』",
+#       "watched": true
+#     }
+#   }
+# }

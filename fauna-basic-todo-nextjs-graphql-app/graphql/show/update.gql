@@ -1,0 +1,24 @@
+# Write your query or mutation here
+mutation updateShow {
+  updateShow(
+    id: "347476432852615764"
+    data: {title: "カウボーイビバップ", watched: true}
+  ) {
+    _id
+    _ts
+    title
+    watched
+  }
+}
+
+# Output
+# {
+#   "data": {
+#     "updateShow": {
+#       "_id": "347476432852615764",
+#       "_ts": 1667638361450000,
+#       "title": "カウボーイビバップ",
+#       "watched": true
+#     }
+#   }
+# }

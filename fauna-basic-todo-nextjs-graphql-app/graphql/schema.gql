@@ -1,0 +1,8 @@
+type Show @collection(name: "shows") {
+  title: String!
+  watched: Boolean
+}
+
+type Query {
+  getShows: [Show!]
+}

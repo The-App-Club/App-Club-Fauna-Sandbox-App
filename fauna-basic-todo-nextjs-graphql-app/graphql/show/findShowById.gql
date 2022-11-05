@@ -1,0 +1,21 @@
+# Write your query or mutation here
+query findShowByID {
+  findShowByID(id: "347475699180765775") {
+    _id
+    _ts
+    title
+    watched
+  }
+}
+
+# Output
+# {
+#   "data": {
+#     "findShowByID": {
+#       "_id": "347475699180765775",
+#       "_ts": 1667637499890000,
+#       "title": "映画『シドニアの騎士 あいつむぐほし』",
+#       "watched": false
+#     }
+#   }
+# }

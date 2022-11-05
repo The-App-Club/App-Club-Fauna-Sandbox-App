@@ -1,0 +1,21 @@
+# Write your query or mutation here
+mutation createShow {
+  createShow(data: {title: "カウボーイビバップ", watched: false}) {
+    _id
+    _ts
+    title
+    watched
+  }
+}
+
+# Output
+# {
+#   "data": {
+#     "createShow": {
+#       "_id": "347476432852615764",
+#       "_ts": 1667638199600000,
+#       "title": "カウボーイビバップ",
+#       "watched": false
+#     }
+#   }
+# }
