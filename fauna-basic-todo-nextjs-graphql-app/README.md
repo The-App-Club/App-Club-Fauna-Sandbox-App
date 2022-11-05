@@ -6,7 +6,7 @@
 ## Set Env
 
 ```bash
-export NEXT_PUBLIC_FAUNADB_SECRET=fnAE0gsOJ0ACUxwg0jkVvPfE0J72MDoOKtEVnNeI
+export NEXT_PUBLIC_FAUNADB_SECRET=HERE_YOUR_KEY
 ```
 
 ## Set Up
