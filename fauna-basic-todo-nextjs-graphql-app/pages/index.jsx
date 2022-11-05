@@ -28,6 +28,17 @@ const schema = yup.object({
 export default function Home() {
   const {newShow, setNewShow, getShows, addShows, updateShow, deleteShow} =
     useShow();
+  const {
+    data: shows,
+    error: errorShows,
+    mutate: mutateShows,
+  } = useSWR({}, async () => {
+    try {
+      return await getShows();
+    } catch (error) {
+      return error;
+    }
+  });
 
   const {
     register,
@@ -36,125 +47,94 @@ export default function Home() {
     setValue,
     formState: {errors},
   } = useForm({resolver: yupResolver(schema), mode: 'all'});
+
   const doSubmit = async ({newShow}) => {
     try {
       setNewShow(newShow);
-      const {data: result, statusCode, message} = await addShows(newShow);
-      if (statusCode === 200) {
-        setNewShow('');
-        mutateShows();
-        toast(`"${result.data.title}"を追加しました`, {
-          className: cx(
-            `text-sm font-bold`,
-            css`
-              font-family: 'Noto Sans JP', sans-serif;
-            `
-          ),
-        });
-      } else {
-        toast(`"${result.title}"の追加に失敗しました`, {
-          className: cx(
-            `text-sm font-bold`,
-            css`
-              font-family: 'Noto Sans JP', sans-serif;
-            `
-          ),
-        });
-        console.log(message);
-      }
+      const {result, statusCode, message} = await addShows(newShow);
+      setNewShow('');
+      mutateShows();
+      toast(`"${result.data.title}"を追加しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
     } catch (error) {
-      console.log(error);
+      const {result, statusCode, message} = {...error};
+      toast(`"${result.data.title}"の追加に失敗しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
     }
   };
-
-  const {
-    data: shows,
-    error: errorShows,
-    mutate: mutateShows,
-  } = useSWR({}, async () => {
-    try {
-      const response = await getShows();
-      return response;
-    } catch (error) {
-      return error;
-    }
-  });
 
   const handleUpdateShow = async (e, show) => {
-    const {data} = show;
     try {
-      const {
-        data: result,
-        statusCode,
-        message,
-      } = await updateShow({
-        ...data,
+      const {result, statusCode, message} = await updateShow({
+        ...show,
         watched: e.target.checked,
       });
-      if (statusCode === 200) {
-        mutateShows();
-        toast(
-          `${result.data.title}を"${
-            result.data.watched ? '視聴済' : '未視聴'
-          }"に更新しました`,
-          {
-            className: cx(
-              `text-sm font-bold`,
-              css`
-                font-family: 'Noto Sans JP', sans-serif;
-              `
-            ),
-          }
-        );
-      } else {
-        toast(`"${result.title}"の更新に失敗しました`, {
+      mutateShows();
+      toast(
+        `${result.data.title}を"${
+          result.data.watched ? '視聴済' : '未視聴'
+        }"に更新しました`,
+        {
           className: cx(
             `text-sm font-bold`,
             css`
               font-family: 'Noto Sans JP', sans-serif;
             `
           ),
-        });
-      }
+        }
+      );
     } catch (error) {
-      console.log(error);
+      const {result, statusCode, message} = {...error};
+      toast(`"${result.data.title}"の更新に失敗しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
     }
   };
 
-  const handleDeleteShow = async ({data}) => {
+  const handleDeleteShow = async (show) => {
     try {
-      const {data: result, statusCode, message} = await deleteShow({...data});
-      if (statusCode === 200) {
-        mutateShows();
-        toast(`"${result.data.title}"を削除しました`, {
-          className: cx(
-            `text-sm font-bold`,
-            css`
-              font-family: 'Noto Sans JP', sans-serif;
-            `
-          ),
-        });
-      } else {
-        toast(`"${result.title}"の削除に失敗しました`, {
-          className: cx(
-            `text-sm font-bold`,
-            css`
-              font-family: 'Noto Sans JP', sans-serif;
-            `
-          ),
-        });
-      }
+      const {result, statusCode, message} = await deleteShow(show);
+      mutateShows();
+      toast(`"${result.data.title}"を削除しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
     } catch (error) {
-      console.log(error);
+      const {result, statusCode, message} = {...error};
+      toast(`"${result.data.title}"の削除に失敗しました`, {
+        className: cx(
+          `text-sm font-bold`,
+          css`
+            font-family: 'Noto Sans JP', sans-serif;
+          `
+        ),
+      });
     }
-  };
-
-  const handleNewShow = (e) => {
-    setNewShow(e.target.value);
   };
 
   if (errorShows) {
-    return <p>{errorShows.data}</p>;
+    return <p>{`something went wrong...`}</p>;
   }
 
   if (!shows) {
@@ -191,8 +171,8 @@ export default function Home() {
               />
               <Checkbox
                 color="neutral"
-                checked={show.data.watched}
-                label={show.data.title}
+                checked={show.watched}
+                label={show.title}
                 onClick={(e) => {
                   handleUpdateShow(e, show);
                 }}

@@ -12,6 +12,7 @@
       "@/pages/*": ["pages/*"],
       "@/patches/*": ["patches/*"],
       "@/stores/*": ["stores/*"],
+      "@/queries/*": ["queries/*"],
       "@/utils/*": ["utils/*"],
       "@/styles/*": ["styles/*"]
     }

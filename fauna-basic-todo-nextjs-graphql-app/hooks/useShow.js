@@ -1,20 +1,23 @@
+import {useGraphqlClinet} from '@/pages/_app';
+import {createShowQuery} from '@/queries/createShowQuery';
+import {deleteShowQuery} from '@/queries/deleteShowQuery';
+import {getShowsQuery} from '@/queries/getShowsQuery';
+import {partialUpdateShowQuery} from '@/queries/partialUpdateShowQuery';
 import {useState} from 'react';
 import useSWR from 'swr';
 
 const useShow = () => {
+  const client = useGraphqlClinet();
   const [newShow, setNewShow] = useState('');
 
   const getShows = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch('/api/getShows', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
+        const {
+          data: {
+            getShows: {data},
           },
-        });
-        const json = await response.json();
-        const {data} = {...json};
+        } = await client.query(getShowsQuery).toPromise();
         resolve(data);
       } catch (error) {
         reject(error);
@@ -25,18 +28,34 @@ const useShow = () => {
   const addShows = (newShow) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch('/api/addShow', {
-          method: 'POST',
-          body: JSON.stringify({
-            title: newShow,
-          }),
-        });
-        const body = await response.json();
+        const {
+          data: {createShow},
+        } = await client
+          .mutation(createShowQuery, {
+            data: {
+              title: newShow,
+              watched: false,
+            },
+          })
+          .toPromise();
         setNewShow('');
-        resolve(body);
+        resolve({
+          result: {
+            data: createShow,
+          },
+          statusCode: 200,
+          message: `success`,
+        });
       } catch (error) {
-        console.log(error);
-        reject(error);
+        reject({
+          result: {
+            data: {
+              title: newShow,
+            },
+          },
+          statusCode: 500,
+          message: `something went wrong...`,
+        });
       }
     });
   };
@@ -44,14 +63,31 @@ const useShow = () => {
   const updateShow = (willUpdatedShow) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch('/api/updateShow', {
-          method: 'POST',
-          body: JSON.stringify(willUpdatedShow),
+        const {
+          data: {partialUpdateShow},
+        } = await client
+          .mutation(partialUpdateShowQuery, {
+            id: willUpdatedShow._id,
+            data: {
+              watched: willUpdatedShow.watched,
+            },
+          })
+          .toPromise();
+        resolve({
+          result: {
+            data: partialUpdateShow,
+          },
+          statusCode: 200,
+          message: `success`,
         });
-        const body = await response.json();
-        resolve(body);
       } catch (error) {
-        reject(error);
+        reject({
+          result: {
+            data: willUpdatedShow,
+          },
+          statusCode: 500,
+          message: `something went wrong...`,
+        });
       }
     });
   };
@@ -59,14 +95,28 @@ const useShow = () => {
   const deleteShow = (willDeletedShow) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch('/api/deleteShow', {
-          method: 'POST',
-          body: JSON.stringify(willDeletedShow),
+        const {
+          data: {deleteShow},
+        } = await client
+          .mutation(deleteShowQuery, {
+            id: willDeletedShow._id,
+          })
+          .toPromise();
+        resolve({
+          result: {
+            data: deleteShow,
+          },
+          statusCode: 200,
+          message: `success`,
         });
-        const body = await response.json();
-        resolve(body);
       } catch (error) {
-        reject(error);
+        reject({
+          result: {
+            data: willDeletedShow,
+          },
+          statusCode: 500,
+          message: `something went wrong...`,
+        });
       }
     });
   };
