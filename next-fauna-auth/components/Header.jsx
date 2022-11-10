@@ -26,7 +26,9 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/login');
+      setTimeout(() => {
+        router.push('/login');
+      }, 300);
     } catch (error) {
       console.log(error);
     }

@@ -38,7 +38,9 @@ const Signup = () => {
     onSubmit: async (formData) => {
       try {
         await signup(formData);
-        router.push('/');
+        setTimeout(() => {
+          router.push('/');
+        }, 300);
       } catch (error) {
         console.log(error);
       }
