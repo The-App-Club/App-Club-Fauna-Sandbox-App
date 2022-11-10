@@ -13,6 +13,9 @@ const Header = () => {
   const {getUser} = useUser();
   const {logout} = useAuth();
   const {data: user, error} = useSWR('getUser', async () => {
+    if (!cookies.fauna_token) {
+      return {};
+    }
     try {
       return await getUser();
     } catch (error) {
