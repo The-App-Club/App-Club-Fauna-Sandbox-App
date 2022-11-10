@@ -70,7 +70,7 @@ const useTodo = () => {
     `;
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch('/api/user', {
+        const response = await fetch('/api/me', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

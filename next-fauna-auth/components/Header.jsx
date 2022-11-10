@@ -11,18 +11,18 @@ import {useEffect} from 'react';
 const Header = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['fauna_token']);
   const router = useRouter();
-  const {getUser} = useUser();
+  const {getMe} = useUser();
   const {logout} = useAuth();
   const {
     data: user,
     error,
     mutate,
-  } = useSWR('getUser', async () => {
+  } = useSWR('getMe', async () => {
     if (!cookies.fauna_token) {
       return {};
     }
     try {
-      return await getUser();
+      return await getMe();
     } catch (error) {
       return error;
     }

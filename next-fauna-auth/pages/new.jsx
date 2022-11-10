@@ -19,10 +19,10 @@ const New = () => {
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['fauna_token']);
   const {createATodo} = useTodo();
-  const {getUser} = useUser();
-  const {data: user, error} = useSWR('getUser', async () => {
+  const {getMe} = useUser();
+  const {data: user, error} = useSWR('getMe', async () => {
     try {
-      return await getUser();
+      return await getMe();
     } catch (error) {
       return error;
     }

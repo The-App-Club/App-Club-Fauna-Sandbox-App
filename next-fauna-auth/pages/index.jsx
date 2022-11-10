@@ -16,14 +16,25 @@ import useUser from '@/hooks/useUser';
 
 const Home = () => {
   const router = useRouter();
+  const {getMe, getUser} = useUser();
   const [cookies, setCookie, removeCookie] = useCookies(['fauna_token']);
   const {deleteATodo, blockFeature, getPrivateData, getPublicData, toggleTodo} =
     useTodo();
   const {data, error, mutate} = useSWR({}, async () => {
     if (cookies.fauna_token) {
-      return await getPrivateData({token: cookies.fauna_token});
+      const items = await getPrivateData({token: cookies.fauna_token});
+      return await Promise.all(
+        items.map(async (item) => {
+          return {...item, owner: await getUser(item.owner.email)};
+        })
+      );
     } else {
-      return await getPublicData({token: cookies.fauna_token});
+      const items = await getPublicData({token: cookies.fauna_token});
+      return await Promise.all(
+        items.map(async (item) => {
+          return {...item, owner: await getUser(item.owner.email)};
+        })
+      );
     }
   });
 
@@ -66,8 +77,7 @@ const Home = () => {
     } else {
       return (
         <Box className="w-full flex flex-col gap-4">
-          {data.map((todo) => {
-            console.log(todo.owner);
+          {data.map((todo, index) => {
             return (
               <Box key={todo._id} className={`w-full border-2 p-2`}>
                 <Checkbox
@@ -89,12 +99,15 @@ const Home = () => {
                   <Box className={`flex items-center`}>
                     <Image
                       alt={todo.owner.email}
-                      src={'/assets/profile1.png'}
+                      src={todo.owner.avatorURL}
                       width={40}
                       height={40}
                       className={`hover:cursor-pointer !rounded-full !border-2`}
                       onClick={(e) => {
-                        // router.push('/profile1');
+                        if (blockFeature()) {
+                          return;
+                        }
+                        router.push('/profile');
                       }}
                     />
                   </Box>

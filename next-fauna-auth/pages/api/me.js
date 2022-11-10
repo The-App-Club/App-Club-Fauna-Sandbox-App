@@ -2,17 +2,16 @@ import {query as q} from 'faunadb';
 import {FaunaDBManager} from '../../utils/faunaFQLClient';
 
 export default async function user(req, res) {
-  const client = new FaunaDBManager().client;
-  const {email} = req.body;
-  if (!email) {
+  const {token} = req.body;
+  if (!token) {
     return res.status(401).json({
       httpStatus: 401,
-      message: `Email not found`,
+      message: `Auth cookie not found`,
     });
   }
   try {
-    const {ref, data} = await client.query(
-      q.Get(q.Match(q.Index('user_by_email'), q.Casefold(email)))
+    const {ref, data} = await new FaunaDBManager(token).client.query(
+      q.Get(q.CurrentIdentity())
     );
     return res.status(200).json({...data, id: ref.id, httpStatus: 200});
   } catch (error) {
