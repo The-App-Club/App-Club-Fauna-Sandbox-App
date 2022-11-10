@@ -1,5 +1,19 @@
 import {query as q} from 'faunadb';
 import {FaunaDBManager} from '../../utils/faunaFQLClient';
+import {default as chance} from 'chance';
+import {gsap} from 'gsap';
+
+const avators = [
+  `/assets/profile1.png`,
+  `/assets/profile2.png`,
+  `/assets/profile3.png`,
+  `/assets/profile4.png`,
+  `/assets/profile5.png`,
+  `/assets/profile6.png`,
+  `/assets/profile7.png`,
+  `/assets/profile8.png`,
+  `/assets/profile9.png`,
+];
 
 export default async function signup(req, res) {
   const client = new FaunaDBManager().client;
@@ -27,7 +41,12 @@ export default async function signup(req, res) {
     const user = await client.query(
       q.Create(q.Collection('User'), {
         credentials: {password},
-        data: {email},
+        data: {
+          email,
+          avatorURL: gsap.utils.wrap(avators)(
+            chance().integer({min: 0, max: avators.length - 1})
+          ),
+        },
       })
     );
 

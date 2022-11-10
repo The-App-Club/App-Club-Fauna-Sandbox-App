@@ -7,6 +7,26 @@ import {toast} from 'react-toastify';
 const useTodo = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['fauna_token']);
 
+  const blockFeature = (callback = () => {}) => {
+    if (!cookies.fauna_token) {
+      toast(`この機能はログインしてから利用できます`, {
+        className: cx(
+          css`
+            font-weight: 700;
+            font-size: 0.875rem; /* 14px */
+            line-height: 1.25rem; /* 20px */
+            font-family: 'Inter', sans-serif;
+          `
+        ),
+        type: 'info',
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const getPublicData = ({token}) => {
     const query = gql`
       query a {
@@ -315,6 +335,7 @@ const useTodo = () => {
   };
 
   return {
+    blockFeature,
     findATodoByID,
     getPublicData,
     getPrivateData,

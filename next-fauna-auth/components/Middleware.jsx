@@ -8,7 +8,7 @@ const useRedirect = () => {
 
   useEffect(() => {
     if (!cookies.fauna_token) {
-      router.push('/login');
+      // router.push('/login');
     }
   }, [cookies]);
 

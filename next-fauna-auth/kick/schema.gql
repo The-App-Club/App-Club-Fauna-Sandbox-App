@@ -6,6 +6,7 @@ type Todo {
 
 type User {
   email: String! @unique
+  avatorURL: String!
   todos: [Todo!] @relation
 }
 

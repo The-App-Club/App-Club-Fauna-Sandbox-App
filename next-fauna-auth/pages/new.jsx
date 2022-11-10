@@ -40,7 +40,7 @@ const New = () => {
     onSubmit: async (formData) => {
       const {task} = {...formData};
       try {
-        const response = await createATodo(task, user.id);
+        const response = await createATodo(task, user.id, user.avatorURL);
         console.log(response);
         router.push('/');
       } catch (error) {

@@ -10,11 +10,15 @@ import {useRouter} from 'next/router';
 import useTodo from '@/hooks/useTodo';
 import Image from 'next/image';
 import Spacer from '@/components/Spacer';
+import {toast} from 'react-toastify';
+import {useEffect} from 'react';
+import useUser from '@/hooks/useUser';
 
 const Home = () => {
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['fauna_token']);
-  const {deleteATodo, getPrivateData, getPublicData, toggleTodo} = useTodo();
+  const {deleteATodo, blockFeature, getPrivateData, getPublicData, toggleTodo} =
+    useTodo();
   const {data, error, mutate} = useSWR({}, async () => {
     if (cookies.fauna_token) {
       return await getPrivateData({token: cookies.fauna_token});
@@ -43,6 +47,11 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    // logout
+    mutate();
+  }, [cookies]);
+
   if (error) {
     return <p>something went wrong...</p>;
   }
@@ -58,6 +67,7 @@ const Home = () => {
       return (
         <Box className="w-full flex flex-col gap-4">
           {data.map((todo) => {
+            console.log(todo.owner);
             return (
               <Box key={todo._id} className={`w-full border-2 p-2`}>
                 <Checkbox
@@ -65,6 +75,9 @@ const Home = () => {
                   checked={todo.completed}
                   label={todo.task}
                   onClick={(e) => {
+                    if (blockFeature()) {
+                      return;
+                    }
                     handleToggle({
                       id: todo._id,
                       completed: todo.completed,
@@ -76,12 +89,12 @@ const Home = () => {
                   <Box className={`flex items-center`}>
                     <Image
                       alt={todo.owner.email}
-                      src={'/assets/profile.png'}
+                      src={'/assets/profile1.png'}
                       width={40}
                       height={40}
                       className={`hover:cursor-pointer !rounded-full !border-2`}
                       onClick={(e) => {
-                        // router.push('/profile');
+                        // router.push('/profile1');
                       }}
                     />
                   </Box>
@@ -94,6 +107,9 @@ const Home = () => {
                         `outline-none focus-visible:ring-2 focus-visible:ring-black`
                       )}
                       onClick={(e) => {
+                        if (blockFeature()) {
+                          return;
+                        }
                         router.push({
                           pathname: `/todo/${todo._id}`,
                         });
@@ -109,6 +125,9 @@ const Home = () => {
                         `outline-none focus-visible:ring-2 focus-visible:ring-black`
                       )}
                       onClick={(e) => {
+                        if (blockFeature()) {
+                          return;
+                        }
                         handleDelete({id: todo._id});
                       }}
                     >
@@ -152,6 +171,9 @@ const Home = () => {
             `outline-none focus-visible:ring-2 focus-visible:ring-black`
           )}
           onClick={(e) => {
+            if (blockFeature()) {
+              return;
+            }
             router.push({
               pathname: '/new',
             });
