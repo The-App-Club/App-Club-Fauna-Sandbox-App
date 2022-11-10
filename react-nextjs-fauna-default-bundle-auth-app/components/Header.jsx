@@ -117,7 +117,7 @@ const Header = () => {
             height={60}
             className={`hover:cursor-pointer !rounded-full !border-2`}
             onClick={(e) => {
-              router.push('/profile1');
+              router.push('/profile');
             }}
           />
         </li>
