@@ -14,6 +14,7 @@
 
 ```bash
 $ export NEXT_PUBLIC_FAUNA_DB_SERVER_KEY=HERE_YOUR_KEY
+
 $ yarn run setup
 ```
 
