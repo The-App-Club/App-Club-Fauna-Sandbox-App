@@ -109,6 +109,7 @@ const useTodo = () => {
             `
           ),
           type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         resolve(response);
       } catch (error) {
@@ -122,6 +123,7 @@ const useTodo = () => {
             `
           ),
           type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         reject(error);
       }
@@ -181,6 +183,7 @@ const useTodo = () => {
             `
           ),
           type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         resolve(response);
       } catch (error) {
@@ -194,6 +197,7 @@ const useTodo = () => {
             `
           ),
           type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         reject(error);
       }
@@ -236,6 +240,7 @@ const useTodo = () => {
             `
           ),
           type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         resolve(response);
       } catch (error) {
@@ -249,6 +254,7 @@ const useTodo = () => {
             `
           ),
           type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         reject(response);
       }
@@ -287,6 +293,7 @@ const useTodo = () => {
             `
           ),
           type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         resolve(response);
       } catch (error) {
@@ -300,6 +307,7 @@ const useTodo = () => {
             `
           ),
           type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         reject(error);
       }

@@ -38,6 +38,7 @@ const Signup = () => {
     onSubmit: async (formData) => {
       try {
         await signup(formData);
+        router.push('/');
       } catch (error) {
         console.log(error);
       }
