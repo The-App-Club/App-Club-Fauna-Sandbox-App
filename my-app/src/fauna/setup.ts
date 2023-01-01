@@ -26,19 +26,19 @@ const setup = async () => {
       q.Map(
         [
           {
-            title: '劇場版 Cowboy Bebop',
+            title: '劇場版 「カウボーイビバップ 天国の扉」',
             watched: false,
           },
           {
-            title: '劇場版 着せ恋',
+            title: 'TVアニメ「その着せ替え人形は恋をする」',
             watched: false,
           },
           {
-            title: '劇場版 shirobako',
+            title: 'TVアニメ「SHIROBAKO」',
             watched: false,
           },
           {
-            title: '劇場版 turing',
+            title: 'TVアニメ『理系が恋に落ちたので証明してみた。』',
             watched: false,
           },
         ],

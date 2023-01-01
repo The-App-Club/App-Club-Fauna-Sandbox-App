@@ -10,7 +10,7 @@ import { BackendResponse } from '@/types/response'
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
-  const { client, subscribe, unsubscribe } = useFauna()
+  const { client, subscribe, unsubscribe } = useFauna('shows')
   const handleSetup = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     const response = await setup()
@@ -67,7 +67,7 @@ const Home: NextPage = () => {
 
   const handleSubscribe = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    subscribe('shows')
+    subscribe()
   }
 
   const handleUnSubscribe = async (e: React.MouseEvent<HTMLButtonElement>) => {

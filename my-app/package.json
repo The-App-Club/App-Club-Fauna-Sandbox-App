@@ -33,6 +33,7 @@
     "faunadb": "^4.7.1",
     "flat": "^5.0.2",
     "framer-motion": "^8.0.1",
+    "json-object-mapper": "^1.7.1",
     "next": "^12.3.4",
     "next-connect": "^0.13.0",
     "nextjs-progressbar": "^0.0.16",

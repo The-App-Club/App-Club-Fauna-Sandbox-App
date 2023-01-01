@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 
 import { CssBaseline } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
+import { Subscription, SubscriptionEventHandlers } from 'faunadb'
 import { MutableSnapshot, RecoilRoot } from 'recoil'
 
 import theme from '@/config/theme'
@@ -24,6 +25,10 @@ const doInitializeState = (mutableSnapshot: MutableSnapshot) => {
     return {
       ...prevState,
       client: new FaunaDBQueryManager().getClient(),
+      streamClient: new Map<
+        string,
+        Subscription<Omit<SubscriptionEventHandlers, 'snapshot'>> | null
+      >(),
     }
   })
 }

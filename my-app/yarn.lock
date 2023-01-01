@@ -2395,6 +2395,11 @@ js-yaml@^4.1.0:
   dependencies:
     argparse "^2.0.1"
 
+json-object-mapper@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/json-object-mapper/-/json-object-mapper-1.7.1.tgz#424a6dedb12e7d9b0d09f8f9ef9d1d8343f4346a"
+  integrity sha512-3OCBJWrTGkr1KduV2AvaAJtiHaoWPUWU1sWRYvVvAKSNvciI8KH39pvYw184TWEAN1O1Ymre4B5By+RAVq1Fdw==
+
 json-parse-even-better-errors@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
