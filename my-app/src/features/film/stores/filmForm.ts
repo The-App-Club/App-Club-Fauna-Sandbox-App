@@ -1,11 +1,13 @@
 import { atom } from 'recoil'
 import { z } from 'zod'
 
-export const FilmFormSchema = z.object({
-  documentId: z.string().nullish(),
-  title: z.string().nullish(),
-  watched: z.boolean().nullish(),
-})
+export const FilmFormSchema = z
+  .object({
+    documentId: z.string().nullish(),
+    title: z.string().nullish(),
+    watched: z.boolean().nullish(),
+  })
+  .nullable()
 
 export type FilmForm = z.infer<typeof FilmFormSchema>
 

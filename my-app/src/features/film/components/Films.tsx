@@ -1,20 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 
 import { css } from '@emotion/react'
-import { Box, Button, Checkbox, Divider, Link, Typography } from '@mui/joy'
-import { Chance } from 'chance'
-import { ArrowLeft, Trash } from 'phosphor-react'
+import { Box, Button, Divider, Link, Typography } from '@mui/joy'
+import { ArrowLeft, ArrowSquareOut, Trash } from 'phosphor-react'
 
 import { FallbackDataEmpty } from '@/components/fallback/FallbackDataEmpty'
 import { FallbackError } from '@/components/fallback/FallbackError'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
-import useCreateFilmHook from '@/features/film/hooks/create.hook'
 import useDeleteFilmHook from '@/features/film/hooks/delete.hook'
 import useFilmListUpHook from '@/features/film/hooks/listUp.hook'
-import useUpdateFilmHook from '@/features/film/hooks/update.hook'
 import { FILM_KEY, FilmData } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
 import useFauna from '@/libs/useFauna'
@@ -22,17 +20,15 @@ import { ErrorData } from '@/types/error'
 import { BackendResponse } from '@/types/response'
 
 const FilmsPage = () => {
-  const { addMutation } = useCreateFilmHook()
-  const { updateMutation } = useUpdateFilmHook()
+  const router = useRouter()
   const { removeMutation } = useDeleteFilmHook()
   const { data, error, refetch } = useFilmListUpHook()
   const { subscribe, unsubscribe } = useFauna('shows')
 
   const handleAdd = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    addMutation.mutate({
-      title: Chance().name(),
-      watched: false,
+    router.push({
+      pathname: '/film/create',
     })
   }
 
@@ -100,19 +96,18 @@ const FilmsPage = () => {
                   }
                 `}
               />
-              <Checkbox
-                color='neutral'
-                checked={film?.watched}
-                label={film?.title}
-                onClick={(e: React.MouseEvent) => {
-                  e.stopPropagation()
-                  updateMutation.mutate({
-                    documentId: id,
-                    ...film,
-                    watched: (e.target as HTMLInputElement).checked,
-                  })
-                }}
-              />
+              <Typography component={'p'}>{film?.title}</Typography>
+              <NextLink href={`/films/${id}`} passHref>
+                <Link
+                  underline='none'
+                  css={css`
+                    display: flex;
+                    align-items: center;
+                  `}
+                >
+                  <ArrowSquareOut size={24} />
+                </Link>
+              </NextLink>
             </Box>
           )
         })}

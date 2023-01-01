@@ -81,4 +81,18 @@ export class FilmRepository implements FilmFactory {
       throw error
     }
   }
+  async find({
+    documentId,
+  }: {
+    documentId: string
+  }): Promise<BackendResponse<FilmData>> {
+    try {
+      const data: BackendResponse<FilmData> = await this.client.query(
+        q.Get(q.Ref(q.Collection('shows'), documentId))
+      )
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
 }

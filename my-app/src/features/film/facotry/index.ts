@@ -5,6 +5,11 @@ import { BackendResponse } from '@/types/response'
 
 // https://docs.fauna.com/fauna/current/api/fql/functions/ref?lang=javascript#parameters
 export interface FilmFactory {
+  find({
+    documentId,
+  }: {
+    documentId: string
+  }): Promise<BackendResponse<FilmData>>
   listUp(): Promise<BackendResponse<FilmData>[]>
   create({ film }: { film: FilmForm }): Promise<BackendResponse<FilmData>>
   update({
