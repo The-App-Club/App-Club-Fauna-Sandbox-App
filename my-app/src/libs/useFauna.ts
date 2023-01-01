@@ -21,8 +21,11 @@ const useFauna = (collectionName?: string) => {
         if (activeFauna.streamClient?.has(collectionName)) {
           activeFauna.streamClient.get(collectionName)?.close()
         }
+        const watchedObject = id
+          ? q.Ref(q.Collection(collectionName), id)
+          : q.Documents(q.Collection(collectionName))
         const streamClient = client
-          .stream(q.Documents(q.Collection(collectionName)))
+          .stream(watchedObject)
           .on('start', (e) => {
             console.log('[start]', e)
           })
@@ -39,27 +42,48 @@ const useFauna = (collectionName?: string) => {
             console.log(`[version]`, e)
           })
         streamClient.start()
-        setActiveFauna((prevState) => {
-          const map = new Map<string, StreamClient>()
-          map.set(collectionName, streamClient)
-          return {
-            ...prevState,
-            streamClient: map,
-          }
-        })
+
+        if (id) {
+          setActiveFauna((prevState) => {
+            const map = new Map<string, StreamClient>()
+            map.set(`${collectionName}-${id}`, streamClient)
+            return {
+              ...prevState,
+              streamClient: map,
+            }
+          })
+        } else {
+          setActiveFauna((prevState) => {
+            const map = new Map<string, StreamClient>()
+            map.set(collectionName, streamClient)
+            return {
+              ...prevState,
+              streamClient: map,
+            }
+          })
+        }
       }
     },
     [client, activeFauna, setActiveFauna, collectionName]
   )
 
-  const unsubscribe = useCallback(() => {
-    if (!collectionName) {
-      return
-    }
-    if (activeFauna.streamClient?.has(collectionName)) {
-      activeFauna.streamClient.get(collectionName)?.close()
-    }
-  }, [activeFauna, collectionName])
+  const unsubscribe = useCallback(
+    (id?: string) => {
+      if (!collectionName) {
+        return
+      }
+      if (id) {
+        if (activeFauna.streamClient?.has(`${collectionName}-${id}`)) {
+          activeFauna.streamClient.get(`${collectionName}-${id}`)?.close()
+        }
+      } else {
+        if (activeFauna.streamClient?.has(collectionName)) {
+          activeFauna.streamClient.get(collectionName)?.close()
+        }
+      }
+    },
+    [activeFauna, collectionName]
+  )
 
   return {
     setActiveFauna,

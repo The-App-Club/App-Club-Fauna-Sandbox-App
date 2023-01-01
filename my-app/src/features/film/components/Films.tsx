@@ -133,14 +133,18 @@ const FilmsPage = () => {
                 <Button
                   variant='solid'
                   color='success'
-                  onClick={handleSubscribe}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    subscribe(id)
+                  }}
                 >
                   Subscribe
                 </Button>
                 <Button
                   variant='solid'
                   color='danger'
-                  onClick={handleUnSubscribe}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    unsubscribe(id)
+                  }}
                 >
                   UnSubscribe
                 </Button>
@@ -182,10 +186,30 @@ const FilmsPage = () => {
         </Button>
       </Box>
       <Spacer />
+      <Divider />
+      <Spacer />
+      <Typography
+        component={'p'}
+        css={css`
+          font-weight: 700;
+        `}
+      >
+        Document Level Subscription (watched update or delete operation)
+      </Typography>
+      <Spacer />
       {renderContent({ data, error, refetch })}
       <Spacer />
       <Divider />
-      <Spacer height='3rem' />
+      <Spacer />
+      <Typography
+        component={'p'}
+        css={css`
+          font-weight: 700;
+        `}
+      >
+        Collection Level Subscription (watched add or remove operation)
+      </Typography>
+      <Spacer />
       <Box
         css={css`
           display: flex;
