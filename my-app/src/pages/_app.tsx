@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { CacheProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
+import { QueryClientProvider } from '@tanstack/react-query'
 import NextNProgress from 'nextjs-progressbar'
 import { Toaster } from 'react-hot-toast'
 import { MutableSnapshot, RecoilRoot } from 'recoil'
@@ -18,6 +19,7 @@ import { matchedActivePage } from '@/config/routes'
 import theme from '@/config/theme'
 import { FaunaDBQueryManager, StreamClient } from '@/fauna/config'
 import AuthLayout from '@/layouts/AuthLayout'
+import { queryClient } from '@/libs/queryClient'
 import useHeaderMenu from '@/libs/useHeaderMenu'
 import { faunaState } from '@/stores/fauna'
 
@@ -59,14 +61,16 @@ const MyApp = ({
   }, [handleRouteChangeStart, router])
 
   return (
-    <CacheProvider value={emotionCache}>
-      <CssVarsProvider theme={theme}>
-        <CssBaseline />
-        <AuthLayout>
-          <Component {...pageProps} />
-        </AuthLayout>
-      </CssVarsProvider>
-    </CacheProvider>
+    <QueryClientProvider client={queryClient}>
+      <CacheProvider value={emotionCache}>
+        <CssVarsProvider theme={theme}>
+          <CssBaseline />
+          <AuthLayout>
+            <Component {...pageProps} />
+          </AuthLayout>
+        </CssVarsProvider>
+      </CacheProvider>
+    </QueryClientProvider>
   )
 }
 
