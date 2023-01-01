@@ -5,25 +5,17 @@ import { FaunaBackendResponse } from '@/types/response'
 
 // https://docs.fauna.com/fauna/current/api/fql/functions/ref?lang=javascript#parameters
 export interface FilmFactory {
-  find({
-    documentId,
-  }: {
-    documentId: string
-  }): Promise<FaunaBackendResponse<FilmData>>
+  find({ id }: { id: string }): Promise<FaunaBackendResponse<FilmData>>
   listUp(): Promise<FaunaBackendResponse<FilmData>[]>
   create({ film }: { film: FilmForm }): Promise<FaunaBackendResponse<FilmData>>
   update({
-    documentId,
+    id,
     film,
   }: {
-    documentId: string
+    id: string
     film: FilmForm
   }): Promise<FaunaBackendResponse<FilmData>>
-  delete({
-    documentId,
-  }: {
-    documentId: string
-  }): Promise<FaunaBackendResponse<FilmData>>
+  delete({ id }: { id: string }): Promise<FaunaBackendResponse<FilmData>>
 }
 
 export const factory = {

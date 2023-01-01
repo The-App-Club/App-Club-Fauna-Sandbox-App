@@ -50,15 +50,15 @@ export class FilmRepository implements FilmFactory {
     }
   }
   async update({
-    documentId,
+    id,
     film,
   }: {
-    documentId: string
+    id: string
     film: FilmForm
   }): Promise<FaunaBackendResponse<FilmData>> {
     try {
       const data: FaunaBackendResponse<FilmData> = await this.client.query(
-        q.Update(q.Ref(q.Collection('shows'), documentId), {
+        q.Update(q.Ref(q.Collection('shows'), id), {
           data: film,
         })
       )
@@ -68,27 +68,23 @@ export class FilmRepository implements FilmFactory {
     }
   }
   async delete({
-    documentId,
+    id,
   }: {
-    documentId: string
+    id: string
   }): Promise<FaunaBackendResponse<FilmData>> {
     try {
       const data: FaunaBackendResponse<FilmData> = await this.client.query(
-        q.Delete(q.Ref(q.Collection('shows'), documentId))
+        q.Delete(q.Ref(q.Collection('shows'), id))
       )
       return data
     } catch (error) {
       throw error
     }
   }
-  async find({
-    documentId,
-  }: {
-    documentId: string
-  }): Promise<FaunaBackendResponse<FilmData>> {
+  async find({ id }: { id: string }): Promise<FaunaBackendResponse<FilmData>> {
     try {
       const data: FaunaBackendResponse<FilmData> = await this.client.query(
-        q.Get(q.Ref(q.Collection('shows'), documentId))
+        q.Get(q.Ref(q.Collection('shows'), id))
       )
       return data
     } catch (error) {

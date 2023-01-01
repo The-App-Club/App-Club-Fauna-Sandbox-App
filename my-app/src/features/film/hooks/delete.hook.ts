@@ -11,12 +11,12 @@ const filmFactory = factory.filmFactory()
 const useDeleteFilmHook = () => {
   const { successToast, errorToast } = useToast()
   const removeMutation = useMutation(
-    async (variables: Pick<FilmForm, 'documentId'>) => {
-      if (!variables.documentId) {
+    async (variables: Pick<FilmForm, 'id'>) => {
+      if (!variables.id) {
         return Promise.reject(new Error('ドキュメントIDは必須です'))
       }
       return await filmFactory.delete({
-        documentId: variables.documentId as string,
+        id: variables.id as string,
       })
     },
     {

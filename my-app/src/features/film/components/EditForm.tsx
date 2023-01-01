@@ -36,7 +36,7 @@ const EditForm = () => {
       message: 'Thank you submit!',
       type: 'disabled',
     })
-    const willPostedData = merge(data, { documentId: activeFilm.documentId })
+    const willPostedData = merge(data, { id: activeFilm.id })
     updateMutation.mutate(willPostedData)
     router.push({
       pathname: '/films',
@@ -58,13 +58,13 @@ const EditForm = () => {
     >
       <BebopTextField
         disabled={true}
-        name={'documentId'}
+        name={'id'}
         type={'text'}
         labelName={`ID`}
         placeholder={``}
         required
         tooltipText='IDのツールチップになります'
-        defaultValue={activeFilm.documentId || ``}
+        defaultValue={activeFilm.id || ``}
         register={register}
         errors={errors}
       />

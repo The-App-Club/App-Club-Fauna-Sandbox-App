@@ -12,11 +12,11 @@ const useUpdateFilmHook = () => {
   const { successToast, errorToast } = useToast()
   const updateMutation = useMutation(
     async (variables: FilmForm) => {
-      if (!variables.documentId) {
+      if (!variables.id) {
         return Promise.reject(new Error('ドキュメントIDは必須です'))
       }
       return await filmFactory.update({
-        documentId: variables.documentId as string,
+        id: variables.id as string,
         film: { ...variables },
       })
     },

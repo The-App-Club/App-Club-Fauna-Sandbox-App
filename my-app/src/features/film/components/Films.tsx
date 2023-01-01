@@ -97,7 +97,7 @@ const FilmsPage = () => {
                   size={24}
                   onClick={(e: React.MouseEvent) => {
                     removeMutation.mutate({
-                      documentId: id,
+                      id: id,
                     })
                   }}
                   css={css`

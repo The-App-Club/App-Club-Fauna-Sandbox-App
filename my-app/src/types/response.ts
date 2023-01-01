@@ -22,6 +22,4 @@ export type FaunaBackendResponse<T> = Merge<
   { data: T }
 >
 
-export type BackendResponse = z.infer<
-  typeof VanillaBackendResponseSchema
->
+export type BackendResponse = z.infer<typeof VanillaBackendResponseSchema>

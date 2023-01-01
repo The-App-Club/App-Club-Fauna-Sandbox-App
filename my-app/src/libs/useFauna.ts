@@ -13,7 +13,7 @@ const useFauna = (collectionName?: string) => {
   }, [activeFauna])
 
   const subscribe = useCallback(
-    (documentId?: string) => {
+    (id?: string) => {
       if (!collectionName) {
         return
       }

@@ -27,7 +27,7 @@ const FilmPage = () => {
   const { removeMutation } = useDeleteFilmHook()
 
   const { data, error, refetch } = useFindFilmHook({
-    documentId: filmId as string,
+    id: filmId as string,
   })
 
   const handleDelete = useCallback(
@@ -36,7 +36,7 @@ const FilmPage = () => {
         return
       }
       removeMutation.mutate({
-        documentId: filmId as string,
+        id: filmId as string,
       })
       router.push({
         pathname: '/films',
@@ -49,12 +49,15 @@ const FilmPage = () => {
     e.stopPropagation()
     if (data) {
       const { data: item } = data
+      if (!item) {
+        return
+      }
       setSidebar((prevState) => {
         return {
           ...prevState,
           activeFilm: {
-            documentId: filmId as string,
             ...item,
+            id: filmId as string,
           },
         }
       })

@@ -7,25 +7,21 @@ import { FaunaBackendResponse } from '@/types/response'
 
 const filmFactory = factory.filmFactory()
 
-const useFindFilmHook = ({ documentId }: { documentId: string }) => {
+const useFindFilmHook = ({ id }: { id: string }) => {
   const { data, error, refetch } = useQuery<
     FaunaBackendResponse<FilmData>,
     ErrorData
-  >(
-    [FILM_KEY, documentId],
-    async () => await filmFactory.find({ documentId }),
-    {
-      onSuccess: function (data) {
-        console.log(`onSuccess`)
-      },
-      onError: function (error) {
-        console.log(`onError`, error)
-      },
-      onSettled: function (data, error) {
-        console.log(`onSettled`)
-      },
-    }
-  )
+  >([FILM_KEY, id], async () => await filmFactory.find({ id }), {
+    onSuccess: function (data) {
+      console.log(`onSuccess`)
+    },
+    onError: function (error) {
+      console.log(`onError`, error)
+    },
+    onSettled: function (data, error) {
+      console.log(`onSettled`)
+    },
+  })
   return { data, error, refetch }
 }
 
