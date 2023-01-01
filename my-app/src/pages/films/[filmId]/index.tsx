@@ -6,9 +6,9 @@ import { type NextPage } from 'next'
 import ErrorBoundary from '@/components/fallback/ErrorBoundary'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 
-const Home = lazy(() => import('@/features/home/components/Home'))
+const Film = lazy(() => import('@/features/film/components/Film'))
 
-const HomePage: NextPage = () => {
+const FilmPage: NextPage = () => {
   return (
     <ErrorBoundary>
       <Suspense
@@ -22,10 +22,10 @@ const HomePage: NextPage = () => {
           </Box>
         }
       >
-        <Home />
+        <Film />
       </Suspense>
     </ErrorBoundary>
   )
 }
 
-export default HomePage
+export default FilmPage
