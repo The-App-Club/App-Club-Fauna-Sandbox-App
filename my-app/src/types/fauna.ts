@@ -1,11 +1,6 @@
-import { Subscription, SubscriptionEventHandlers } from 'faunadb'
-
-import { FaunaDBClient } from '@/fauna/config'
+import { FaunaDBClient, StreamClient } from '@/fauna/config'
 
 export type FaunaManager = {
   client: FaunaDBClient | null
-  streamClient: Map<
-    string,
-    Subscription<Omit<SubscriptionEventHandlers, 'snapshot'>> | null
-  > | null
+  streamClient: Map<string, StreamClient> | null
 }

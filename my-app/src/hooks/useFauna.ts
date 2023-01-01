@@ -1,9 +1,8 @@
 import { useCallback, useMemo } from 'react'
 
-import { Subscription, SubscriptionEventHandlers } from 'faunadb'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { q } from '@/fauna/config'
+import { q, StreamClient } from '@/fauna/config'
 import { faunaState } from '@/stores/fauna'
 
 const useFauna = (collectionName?: string) => {
@@ -40,10 +39,7 @@ const useFauna = (collectionName?: string) => {
         })
       streamClient.start()
       setActiveFauna((prevState) => {
-        const map = new Map<
-          string,
-          Subscription<Omit<SubscriptionEventHandlers, 'snapshot'>> | null
-        >()
+        const map = new Map<string, StreamClient>()
         map.set(collectionName, streamClient)
         return {
           ...prevState,

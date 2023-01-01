@@ -1,4 +1,4 @@
-import faunadb from 'faunadb'
+import faunadb, { Subscription, SubscriptionEventHandlers } from 'faunadb'
 
 import { env } from '@/config/env'
 
@@ -6,6 +6,9 @@ const q = faunadb.query
 
 export type ExprArg = faunadb.ExprArg
 export type FaunaDBClient = faunadb.Client
+export type StreamClient = Subscription<
+  Omit<SubscriptionEventHandlers, 'snapshot'>
+> | null
 
 class FaunaDBQueryManager {
   private client: FaunaDBClient
