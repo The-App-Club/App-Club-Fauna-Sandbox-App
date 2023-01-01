@@ -12,7 +12,7 @@ type Sidebar = {
 const sidebarState = atom<Sidebar>({
   key: 'filmSidebar',
   default: {
-    activeFilm: null,
+    activeFilm: {},
   },
   effects_UNSTABLE: [persistAtom],
 })

@@ -12,42 +12,45 @@ const useFauna = (collectionName?: string) => {
     return { ...activeFauna }
   }, [activeFauna])
 
-  const subscribe = useCallback(() => {
-    if (!collectionName) {
-      return
-    }
-    if (client) {
-      if (activeFauna.streamClient?.has(collectionName)) {
-        activeFauna.streamClient.get(collectionName)?.close()
+  const subscribe = useCallback(
+    (documentId?: string) => {
+      if (!collectionName) {
+        return
       }
-      const streamClient = client
-        .stream(q.Documents(q.Collection(collectionName)))
-        .on('start', (e) => {
-          console.log('[start]', e)
-        })
-        .on('set', (e) => {
-          console.log('[set]', e)
-        })
-        .on('error', (e) => {
-          console.log('[error]', e)
-        })
-        .on('history_rewrite', (e) => {
-          console.log('[history_rewrite]', e)
-        })
-        .on('version', (e) => {
-          console.log(`[version]`, e)
-        })
-      streamClient.start()
-      setActiveFauna((prevState) => {
-        const map = new Map<string, StreamClient>()
-        map.set(collectionName, streamClient)
-        return {
-          ...prevState,
-          streamClient: map,
+      if (client) {
+        if (activeFauna.streamClient?.has(collectionName)) {
+          activeFauna.streamClient.get(collectionName)?.close()
         }
-      })
-    }
-  }, [client, activeFauna, setActiveFauna, collectionName])
+        const streamClient = client
+          .stream(q.Documents(q.Collection(collectionName)))
+          .on('start', (e) => {
+            console.log('[start]', e)
+          })
+          .on('set', (e) => {
+            console.log('[set]', e)
+          })
+          .on('error', (e) => {
+            console.log('[error]', e)
+          })
+          .on('history_rewrite', (e) => {
+            console.log('[history_rewrite]', e)
+          })
+          .on('version', (e) => {
+            console.log(`[version]`, e)
+          })
+        streamClient.start()
+        setActiveFauna((prevState) => {
+          const map = new Map<string, StreamClient>()
+          map.set(collectionName, streamClient)
+          return {
+            ...prevState,
+            streamClient: map,
+          }
+        })
+      }
+    },
+    [client, activeFauna, setActiveFauna, collectionName]
+  )
 
   const unsubscribe = useCallback(() => {
     if (!collectionName) {

@@ -17,7 +17,7 @@ import { FILM_KEY, FilmData } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
 import useFauna from '@/libs/useFauna'
 import { ErrorData } from '@/types/error'
-import { BackendResponse } from '@/types/response'
+import { FaunaBackendResponse } from '@/types/response'
 
 const FilmsPage = () => {
   const router = useRouter()
@@ -47,7 +47,7 @@ const FilmsPage = () => {
     error,
     refetch,
   }: {
-    data: BackendResponse<FilmData>[] | null | undefined
+    data: FaunaBackendResponse<FilmData>[] | null | undefined
     error: ErrorData | null | undefined
     refetch: any
   }) => {
@@ -82,32 +82,69 @@ const FilmsPage = () => {
             },
           } = item
           return (
-            <Box key={index} className={`flex items-center gap-2`}>
-              <Trash
-                size={24}
-                onClick={(e: React.MouseEvent) => {
-                  removeMutation.mutate({
-                    documentId: id,
-                  })
-                }}
+            <Box
+              key={index}
+              className={`flex items-center justify-between gap-2`}
+            >
+              <Box
                 css={css`
-                  :hover {
-                    cursor: pointer;
-                  }
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
                 `}
-              />
-              <Typography component={'p'}>{film?.title}</Typography>
-              <NextLink href={`/films/${id}`} passHref>
-                <Link
-                  underline='none'
+              >
+                <Trash
+                  size={24}
+                  onClick={(e: React.MouseEvent) => {
+                    removeMutation.mutate({
+                      documentId: id,
+                    })
+                  }}
                   css={css`
-                    display: flex;
-                    align-items: center;
+                    min-width: 24px;
+                    min-height: 24px;
+                    :hover {
+                      cursor: pointer;
+                    }
                   `}
+                />
+                <Typography component={'p'} className={`line-clamp-1`}>
+                  {film?.title}
+                </Typography>
+              </Box>
+              <Box
+                css={css`
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                `}
+              >
+                <NextLink href={`/films/${id}`} passHref>
+                  <Link
+                    underline='none'
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
+                    <ArrowSquareOut size={24} />
+                  </Link>
+                </NextLink>
+                <Button
+                  variant='solid'
+                  color='success'
+                  onClick={handleSubscribe}
                 >
-                  <ArrowSquareOut size={24} />
-                </Link>
-              </NextLink>
+                  Subscribe
+                </Button>
+                <Button
+                  variant='solid'
+                  color='danger'
+                  onClick={handleUnSubscribe}
+                >
+                  UnSubscribe
+                </Button>
+              </Box>
             </Box>
           )
         })}

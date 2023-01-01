@@ -3,13 +3,13 @@ import { useQuery } from '@tanstack/react-query'
 import { factory } from '@/features/film/facotry'
 import { FILM_KEY, FilmData } from '@/features/film/types'
 import { ErrorData } from '@/types/error'
-import { BackendResponse } from '@/types/response'
+import { FaunaBackendResponse } from '@/types/response'
 
 const filmFactory = factory.filmFactory()
 
 const useFilmListUpHook = () => {
   const { data, error, refetch } = useQuery<
-    BackendResponse<FilmData>[],
+    FaunaBackendResponse<FilmData>[],
     ErrorData
   >([FILM_KEY], async () => await filmFactory.listUp(), {
     onSuccess: function (data) {

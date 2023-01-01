@@ -1,7 +1,7 @@
 import { FilmRepository } from '@/features/film/repository'
 import { FilmForm } from '@/features/film/stores/filmForm'
 import { FilmData } from '@/features/film/types'
-import { BackendResponse } from '@/types/response'
+import { FaunaBackendResponse } from '@/types/response'
 
 // https://docs.fauna.com/fauna/current/api/fql/functions/ref?lang=javascript#parameters
 export interface FilmFactory {
@@ -9,21 +9,21 @@ export interface FilmFactory {
     documentId,
   }: {
     documentId: string
-  }): Promise<BackendResponse<FilmData>>
-  listUp(): Promise<BackendResponse<FilmData>[]>
-  create({ film }: { film: FilmForm }): Promise<BackendResponse<FilmData>>
+  }): Promise<FaunaBackendResponse<FilmData>>
+  listUp(): Promise<FaunaBackendResponse<FilmData>[]>
+  create({ film }: { film: FilmForm }): Promise<FaunaBackendResponse<FilmData>>
   update({
     documentId,
     film,
   }: {
     documentId: string
     film: FilmForm
-  }): Promise<BackendResponse<FilmData>>
+  }): Promise<FaunaBackendResponse<FilmData>>
   delete({
     documentId,
   }: {
     documentId: string
-  }): Promise<BackendResponse<FilmData>>
+  }): Promise<FaunaBackendResponse<FilmData>>
 }
 
 export const factory = {

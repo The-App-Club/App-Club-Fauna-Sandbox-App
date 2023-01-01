@@ -5,7 +5,7 @@ import { FaunaDBClient, q } from '@/fauna/config'
 import { FilmFactory } from '@/features/film/facotry'
 import { FilmForm } from '@/features/film/stores/filmForm'
 import { FilmData } from '@/features/film/types'
-import { BackendResponse } from '@/types/response'
+import { FaunaBackendResponse } from '@/types/response'
 
 export class FilmRepository implements FilmFactory {
   private client: FaunaDBClient
@@ -19,9 +19,9 @@ export class FilmRepository implements FilmFactory {
       scheme: 'https',
     })
   }
-  async listUp(): Promise<BackendResponse<FilmData>[]> {
+  async listUp(): Promise<FaunaBackendResponse<FilmData>[]> {
     try {
-      const { data }: { data: BackendResponse<FilmData>[] } =
+      const { data }: { data: FaunaBackendResponse<FilmData>[] } =
         await this.client.query(
           q.Map(
             q.Paginate(q.Documents(q.Collection('shows'))),
@@ -37,9 +37,9 @@ export class FilmRepository implements FilmFactory {
     film,
   }: {
     film: FilmForm
-  }): Promise<BackendResponse<FilmData>> {
+  }): Promise<FaunaBackendResponse<FilmData>> {
     try {
-      const data: BackendResponse<FilmData> = await this.client.query(
+      const data: FaunaBackendResponse<FilmData> = await this.client.query(
         q.Create(q.Collection('shows'), {
           data: film,
         })
@@ -55,9 +55,9 @@ export class FilmRepository implements FilmFactory {
   }: {
     documentId: string
     film: FilmForm
-  }): Promise<BackendResponse<FilmData>> {
+  }): Promise<FaunaBackendResponse<FilmData>> {
     try {
-      const data: BackendResponse<FilmData> = await this.client.query(
+      const data: FaunaBackendResponse<FilmData> = await this.client.query(
         q.Update(q.Ref(q.Collection('shows'), documentId), {
           data: film,
         })
@@ -71,9 +71,9 @@ export class FilmRepository implements FilmFactory {
     documentId,
   }: {
     documentId: string
-  }): Promise<BackendResponse<FilmData>> {
+  }): Promise<FaunaBackendResponse<FilmData>> {
     try {
-      const data: BackendResponse<FilmData> = await this.client.query(
+      const data: FaunaBackendResponse<FilmData> = await this.client.query(
         q.Delete(q.Ref(q.Collection('shows'), documentId))
       )
       return data
@@ -85,9 +85,9 @@ export class FilmRepository implements FilmFactory {
     documentId,
   }: {
     documentId: string
-  }): Promise<BackendResponse<FilmData>> {
+  }): Promise<FaunaBackendResponse<FilmData>> {
     try {
-      const data: BackendResponse<FilmData> = await this.client.query(
+      const data: FaunaBackendResponse<FilmData> = await this.client.query(
         q.Get(q.Ref(q.Collection('shows'), documentId))
       )
       return data

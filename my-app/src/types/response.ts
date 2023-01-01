@@ -13,7 +13,15 @@ const BackendResponseSchema = z.object({
   ts: z.number(),
 })
 
-export type BackendResponse<T> = Merge<
+const VanillaBackendResponseSchema = z.object({
+  message: z.string(),
+})
+
+export type FaunaBackendResponse<T> = Merge<
   z.infer<typeof BackendResponseSchema>,
   { data: T }
+>
+
+export type BackendResponse = z.infer<
+  typeof VanillaBackendResponseSchema
 >

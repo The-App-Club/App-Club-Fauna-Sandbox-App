@@ -18,7 +18,7 @@ import useSidebar from '@/features/film/hooks/useSidebar'
 import { FILM_KEY, FilmData } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
 import { ErrorData } from '@/types/error'
-import { BackendResponse } from '@/types/response'
+import { FaunaBackendResponse } from '@/types/response'
 
 const FilmPage = () => {
   const router = useRouter()
@@ -36,7 +36,7 @@ const FilmPage = () => {
         return
       }
       removeMutation.mutate({
-        documentId: filmId,
+        documentId: filmId as string,
       })
       router.push({
         pathname: '/films',
@@ -69,7 +69,7 @@ const FilmPage = () => {
     error,
     refetch,
   }: {
-    data: BackendResponse<FilmData> | null | undefined
+    data: FaunaBackendResponse<FilmData> | null | undefined
     error: ErrorData | null | undefined
     refetch: any
   }) => {
