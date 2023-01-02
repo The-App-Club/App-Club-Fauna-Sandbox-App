@@ -5,7 +5,12 @@ import { useRouter } from 'next/router'
 
 import { css } from '@emotion/react'
 import { Box, Button, Divider, Link, Typography } from '@mui/joy'
-import { ArrowLeft, ArrowSquareOut, Trash } from 'phosphor-react'
+import {
+  ArrowLeft,
+  ArrowsClockwise,
+  ArrowSquareOut,
+  Trash,
+} from 'phosphor-react'
 
 import { FallbackDataEmpty } from '@/components/fallback/FallbackDataEmpty'
 import { FallbackError } from '@/components/fallback/FallbackError'
@@ -30,6 +35,11 @@ const FilmsPage = () => {
     router.push({
       pathname: '/film/create',
     })
+  }
+
+  const handleRefresh = async (e: React.MouseEvent) => {
+    queryClient.removeQueries([FILM_KEY])
+    await refetch()
   }
 
   const handleSubscribe = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -177,9 +187,19 @@ const FilmsPage = () => {
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 0.5rem;
           `}
         >
           Films
+          <ArrowsClockwise
+            size={32}
+            onClick={handleRefresh}
+            css={css`
+              :hover {
+                cursor: pointer;
+              }
+            `}
+          />
         </Typography>
         <Button variant='solid' color='primary' onClick={handleAdd}>
           Add Film
