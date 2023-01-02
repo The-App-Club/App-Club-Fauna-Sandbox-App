@@ -10,6 +10,7 @@ import { CacheProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import NextNProgress from 'nextjs-progressbar'
 import { Toaster } from 'react-hot-toast'
 import { MutableSnapshot, RecoilRoot } from 'recoil'
@@ -70,6 +71,7 @@ const MyApp = ({
           </AuthLayout>
         </CssVarsProvider>
       </CacheProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }

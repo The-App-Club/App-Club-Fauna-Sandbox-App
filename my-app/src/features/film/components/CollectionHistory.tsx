@@ -15,13 +15,13 @@ import { FallbackError } from '@/components/fallback/FallbackError'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
 import useHistoryCollectionHook from '@/features/film/hooks/historyCollection.hook'
+import usePagination from '@/features/film/hooks/usePagination'
+import { ProgressType } from '@/features/film/stores/pagination'
 import { FILM_COLLECTION_HISTORY_KEY } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
 import { ErrorData } from '@/types/error'
 import { FaunaBackendCollectionHistoryResponse } from '@/types/response'
 import { formatRelativeTime, yyyymmddhhmmss } from '@/utils/dateUtil'
-
-import usePagination from '../hooks/usePagination'
 
 const CollectionHistory = () => {
   const { variables, setPagination } = usePagination()
@@ -55,7 +55,7 @@ const CollectionHistory = () => {
       setPagination((prevState) => {
         return {
           ...prevState,
-          mode: 0,
+          mode: ProgressType.PREV,
           currentCursor: data.before,
         }
       })
@@ -72,7 +72,7 @@ const CollectionHistory = () => {
       setPagination((prevState) => {
         return {
           ...prevState,
-          mode: 1,
+          mode: ProgressType.NEXT,
           currentCursor: data.after,
         }
       })

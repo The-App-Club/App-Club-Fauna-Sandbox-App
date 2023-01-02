@@ -26,7 +26,12 @@ const useHistoryCollectionHook = ({
     },
     ErrorData
   >(
-    [FILM_COLLECTION_HISTORY_KEY, size, { beforeCursor, afterCursor }],
+    [
+      FILM_COLLECTION_HISTORY_KEY,
+      collectionName,
+      size,
+      { beforeCursor, afterCursor },
+    ],
     async () =>
       await filmFactory.historyCollection({
         collectionName,

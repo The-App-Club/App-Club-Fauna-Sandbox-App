@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { paginationState } from '@/features/film/stores/pagination'
+import {
+  paginationState,
+  ProgressType,
+} from '@/features/film/stores/pagination'
 
 const usePagination = () => {
   const setPagination = useSetRecoilState(paginationState)
@@ -13,9 +16,13 @@ const usePagination = () => {
     console.log(activePagination)
     return {
       beforeCursor:
-        activePagination.mode === 0 ? activePagination.currentCursor : null,
+        activePagination.mode === ProgressType.PREV
+          ? activePagination.currentCursor
+          : null,
       afterCursor:
-        activePagination.mode === 1 ? activePagination.currentCursor : null,
+        activePagination.mode === ProgressType.NEXT
+          ? activePagination.currentCursor
+          : null,
     }
   }, [activePagination])
 
