@@ -2,6 +2,7 @@ import { FilmRepository } from '@/features/film/repository'
 import { FilmForm } from '@/features/film/stores/filmForm'
 import { FilmData } from '@/features/film/types'
 import {
+  Cursor,
   FaunaBackendCollectionHistoryResponse,
   FaunaBackendDocumentHistoryResponse,
   FaunaBackendResponse,
@@ -29,9 +30,19 @@ export interface FilmFactory {
   }): Promise<FaunaBackendDocumentHistoryResponse<FilmData>[]>
   historyCollection({
     collectionName,
+    size,
+    beforeCursor,
+    afterCursor,
   }: {
     collectionName: string
-  }): Promise<FaunaBackendCollectionHistoryResponse[]>
+    size: number
+    beforeCursor?: Cursor
+    afterCursor?: Cursor
+  }): Promise<{
+    before: Cursor
+    data: FaunaBackendCollectionHistoryResponse[]
+    after: Cursor
+  }>
 }
 
 export const factory = {

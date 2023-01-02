@@ -6,6 +6,7 @@ import { FilmFactory } from '@/features/film/facotry'
 import { FilmForm } from '@/features/film/stores/filmForm'
 import { FilmData } from '@/features/film/types'
 import {
+  Cursor,
   FaunaBackendCollectionHistoryResponse,
   FaunaBackendDocumentHistoryResponse,
   FaunaBackendResponse,
@@ -29,20 +30,80 @@ export class FilmRepository implements FilmFactory {
   }
   async historyCollection({
     collectionName,
+    size,
+    beforeCursor,
+    afterCursor,
   }: {
     collectionName: string
-  }): Promise<FaunaBackendCollectionHistoryResponse[]> {
+    size: number
+    beforeCursor?: Cursor
+    afterCursor?: Cursor
+  }): Promise<{
+    before: Cursor
+    data: FaunaBackendCollectionHistoryResponse[]
+    after: Cursor
+  }> {
     try {
+      if (beforeCursor) {
+        const {
+          before,
+          data,
+          after,
+        }: {
+          before: Cursor
+          data: FaunaBackendCollectionHistoryResponse[]
+          after: Cursor
+        } = await this.client.query(
+          q.Paginate(q.Events(q.Documents(q.Collection(collectionName))), {
+            size,
+            before: beforeCursor,
+          })
+        )
+        return {
+          before,
+          data,
+          after: beforeCursor,
+        }
+      }
+      if (afterCursor) {
+        const {
+          before,
+          data,
+          after,
+        }: {
+          before: Cursor
+          data: FaunaBackendCollectionHistoryResponse[]
+          after: Cursor
+        } = await this.client.query(
+          q.Paginate(q.Events(q.Documents(q.Collection(collectionName))), {
+            size,
+            after: afterCursor,
+          })
+        )
+        return {
+          before: afterCursor,
+          data,
+          after,
+        }
+      }
       const {
+        before,
         data,
         after,
       }: {
+        before: Cursor
         data: FaunaBackendCollectionHistoryResponse[]
-        after: FaunaBackendCollectionHistoryResponse
+        after: Cursor
       } = await this.client.query(
-        q.Paginate(q.Events(q.Documents(q.Collection(collectionName))))
+        q.Paginate(q.Events(q.Documents(q.Collection(collectionName))), {
+          size,
+        })
       )
-      return data
+      return {
+        before,
+        data,
+        after,
+      }
     } catch (error) {
       throw error
     }

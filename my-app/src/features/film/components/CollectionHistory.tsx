@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import NextLink from 'next/link'
 
 import { css } from '@emotion/react'
-import { Box, Typography } from '@mui/joy'
+import { Box, Button, Typography } from '@mui/joy'
 import { Link } from '@mui/joy'
 import { arrange, desc, tidy } from '@tidyjs/tidy'
 import { ArrowsClockwise } from 'phosphor-react'
@@ -21,14 +21,19 @@ import { ErrorData } from '@/types/error'
 import { FaunaBackendCollectionHistoryResponse } from '@/types/response'
 import { formatRelativeTime, yyyymmddhhmmss } from '@/utils/dateUtil'
 
+import usePagination from '../hooks/usePagination'
+
 const CollectionHistory = () => {
+  const { variables, setPagination } = usePagination()
   const { data, error, refetch } = useHistoryCollectionHook({
     collectionName: 'shows',
+    size: 10,
+    ...variables,
   })
 
   const handleRefresh = async (e: React.MouseEvent) => {
     queryClient.removeQueries([FILM_COLLECTION_HISTORY_KEY])
-    await refetch()
+    await refetch({})
   }
 
   const sortedData = useMemo(() => {
@@ -36,8 +41,44 @@ const CollectionHistory = () => {
       return
     }
 
-    return tidy(data as [], arrange([desc('ts')]))
+    const { data: currentData } = data
+
+    return tidy(currentData as [], arrange([desc('ts')]))
   }, [data])
+
+  const handlePrevCursor = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      if (!data) {
+        return
+      }
+      setPagination((prevState) => {
+        return {
+          ...prevState,
+          mode: 0,
+          currentCursor: data.before,
+        }
+      })
+    },
+    [data, setPagination]
+  )
+
+  const handleNextCursor = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      if (!data) {
+        return
+      }
+      setPagination((prevState) => {
+        return {
+          ...prevState,
+          mode: 1,
+          currentCursor: data.after,
+        }
+      })
+    },
+    [data, setPagination]
+  )
 
   const renderContent = ({
     data,
@@ -133,6 +174,30 @@ const CollectionHistory = () => {
         </Typography>
       </Box>
       <Spacer />
+      <Box
+        css={css`
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        `}
+      >
+        <Button
+          variant='solid'
+          color='neutral'
+          onClick={handlePrevCursor}
+          disabled={!data?.before}
+        >
+          Prev Cursor
+        </Button>
+        <Button
+          variant='solid'
+          color='neutral'
+          onClick={handleNextCursor}
+          disabled={!data?.after}
+        >
+          Next Cursor
+        </Button>
+      </Box>
 
       {renderContent({ data: sortedData, error, refetch })}
     </Box>

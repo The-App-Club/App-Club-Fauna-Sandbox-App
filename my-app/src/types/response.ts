@@ -7,6 +7,14 @@ const Ref = z.object({
   }),
 })
 
+// https://docs.fauna.com/fauna/current/api/fql/functions/paginate?lang=javascript#cursor
+
+const CursorSchema = z
+  .object({
+    ts: z.number(),
+  })
+  .nullish()
+
 const BackendResponseSchema = z.object({
   data: z.any(),
   ref: Ref,
@@ -34,6 +42,8 @@ const FaunaBackendDocumentHistoryResponseSchema = z.object({
 const VanillaBackendResponseSchema = z.object({
   message: z.string(),
 })
+
+export type Cursor = z.infer<typeof CursorSchema>
 
 export type FaunaBackendCollectionHistoryResponse = z.infer<
   typeof FaunaBackendCollectionHistoryResponseSchema

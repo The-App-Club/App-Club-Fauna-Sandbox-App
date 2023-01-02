@@ -12,6 +12,10 @@ const routes = [
     pathname: '/films',
     headerMenuName: '映画',
   },
+  {
+    pathname: '/collection-history',
+    headerMenuName: 'コレクションヒストリー',
+  },
 ]
 
 const matchedActivePage = (currentPathname: string): Route | undefined => {

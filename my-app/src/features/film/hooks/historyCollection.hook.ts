@@ -3,21 +3,37 @@ import { useQuery } from '@tanstack/react-query'
 import { factory } from '@/features/film/facotry'
 import { FILM_COLLECTION_HISTORY_KEY } from '@/features/film/types'
 import { ErrorData } from '@/types/error'
-import { FaunaBackendCollectionHistoryResponse } from '@/types/response'
+import { Cursor, FaunaBackendCollectionHistoryResponse } from '@/types/response'
 
 const filmFactory = factory.filmFactory()
 
 const useHistoryCollectionHook = ({
   collectionName,
+  size = 10,
+  beforeCursor,
+  afterCursor,
 }: {
   collectionName: string
+  size: number
+  beforeCursor?: Cursor
+  afterCursor?: Cursor
 }) => {
   const { data, error, refetch } = useQuery<
-    FaunaBackendCollectionHistoryResponse[],
+    {
+      before: Cursor
+      data: FaunaBackendCollectionHistoryResponse[]
+      after: Cursor
+    },
     ErrorData
   >(
-    [FILM_COLLECTION_HISTORY_KEY],
-    async () => await filmFactory.historyCollection({ collectionName }),
+    [FILM_COLLECTION_HISTORY_KEY, size, { beforeCursor, afterCursor }],
+    async () =>
+      await filmFactory.historyCollection({
+        collectionName,
+        size,
+        beforeCursor,
+        afterCursor,
+      }),
     {
       onSuccess: function (data) {
         console.log(`onSuccess`)
