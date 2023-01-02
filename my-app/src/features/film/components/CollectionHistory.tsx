@@ -2,10 +2,11 @@
 
 import { useMemo } from 'react'
 
-import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 
 import { css } from '@emotion/react'
 import { Box, Typography } from '@mui/joy'
+import { Link } from '@mui/joy'
 import { arrange, desc, tidy } from '@tidyjs/tidy'
 import { ArrowsClockwise } from 'phosphor-react'
 
@@ -13,23 +14,20 @@ import { FallbackDataEmpty } from '@/components/fallback/FallbackDataEmpty'
 import { FallbackError } from '@/components/fallback/FallbackError'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
-import useHistoryDocumentHook from '@/features/film/hooks/historyDocument.hook'
-import { FILM_DOCUMENT_HISTORY_KEY, FilmData } from '@/features/film/types'
+import useHistoryCollectionHook from '@/features/film/hooks/historyCollection.hook'
+import { FILM_COLLECTION_HISTORY_KEY } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
 import { ErrorData } from '@/types/error'
-import { FaunaBackendDocumentHistoryResponse } from '@/types/response'
+import { FaunaBackendCollectionHistoryResponse } from '@/types/response'
 import { formatRelativeTime, yyyymmddhhmmss } from '@/utils/dateUtil'
 
-const DocumentHistory = () => {
-  const router = useRouter()
-  const { filmId } = router.query
-  const { data, error, refetch } = useHistoryDocumentHook({
-    id: filmId as string,
+const CollectionHistory = () => {
+  const { data, error, refetch } = useHistoryCollectionHook({
     collectionName: 'shows',
   })
 
   const handleRefresh = async (e: React.MouseEvent) => {
-    queryClient.removeQueries([FILM_DOCUMENT_HISTORY_KEY])
+    queryClient.removeQueries([FILM_COLLECTION_HISTORY_KEY])
     await refetch()
   }
 
@@ -46,7 +44,7 @@ const DocumentHistory = () => {
     error,
     refetch,
   }: {
-    data: FaunaBackendDocumentHistoryResponse<FilmData>[] | null | undefined
+    data: FaunaBackendCollectionHistoryResponse[] | null | undefined
     error: ErrorData | null | undefined
     refetch: any
   }) => {
@@ -56,7 +54,7 @@ const DocumentHistory = () => {
           message={error.message}
           iconSize={40}
           refetch={() => {
-            queryClient.removeQueries([FILM_DOCUMENT_HISTORY_KEY])
+            queryClient.removeQueries([FILM_COLLECTION_HISTORY_KEY])
             refetch()
           }}
         />
@@ -74,7 +72,7 @@ const DocumentHistory = () => {
     return (
       <Box className={`flex flex-col gap-2`}>
         {data.map((item, index) => {
-          const { data: film, action, document, ts } = item
+          const { action, document, ts } = item
           return (
             <Box
               key={index}
@@ -92,7 +90,9 @@ const DocumentHistory = () => {
                 </Typography>
                 <Typography>{yyyymmddhhmmss(ts / 1000)}</Typography>
                 <Typography>{formatRelativeTime(ts / 1000)}</Typography>
-                <Typography>{`#${document.value.id}`}</Typography>
+                <NextLink href={`/films/${document.value.id}`} passHref>
+                  <Link>{`#${document.value.id}`}</Link>
+                </NextLink>
               </Box>
             </Box>
           )
@@ -120,7 +120,7 @@ const DocumentHistory = () => {
             gap: 0.5rem;
           `}
         >
-          Focused Film History
+          Collection History
           <ArrowsClockwise
             size={32}
             onClick={handleRefresh}
@@ -139,4 +139,4 @@ const DocumentHistory = () => {
   )
 }
 
-export default DocumentHistory
+export default CollectionHistory

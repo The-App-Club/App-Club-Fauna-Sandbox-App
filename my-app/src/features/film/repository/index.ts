@@ -21,6 +21,10 @@ export class FilmRepository implements FilmFactory {
       // NOTE: Use the correct domain for your database's Region Group.
       port: 443,
       scheme: 'https',
+      queryTimeout: 2000,
+      observer(res, client) {
+        // console.log(res, client)
+      },
     })
   }
   async historyCollection({
@@ -126,11 +130,13 @@ export class FilmRepository implements FilmFactory {
   }
   async find({ id }: { id: string }): Promise<FaunaBackendResponse<FilmData>> {
     try {
+      console.log(id)
       const data: FaunaBackendResponse<FilmData> = await this.client.query(
         q.Get(q.Ref(q.Collection('shows'), id))
       )
       return data
     } catch (error) {
+      console.log(error)
       throw error
     }
   }

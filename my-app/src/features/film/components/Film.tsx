@@ -20,8 +20,6 @@ import { queryClient } from '@/libs/queryClient'
 import { ErrorData } from '@/types/error'
 import { FaunaBackendResponse } from '@/types/response'
 
-import DocumentHistory from './DocumentHistory'
-
 const FilmPage = () => {
   const router = useRouter()
   const { setSidebar } = useSidebar()
@@ -152,7 +150,8 @@ const FilmPage = () => {
       <Button variant='solid' color='danger' fullWidth onClick={handleDelete}>
         Delete Film
       </Button>
-      <DocumentHistory />
+      {/* <DocumentHistory />
+      <CollectionHistory /> */}
     </Box>
   )
 }

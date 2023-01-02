@@ -10,6 +10,8 @@ export const generateQueryClient = (): QueryClient => {
         networkMode: 'online',
         retry: env.NEXT_PUBLIC_ERROR_RETRY_COUNT,
         retryDelay: env.NEXT_PUBLIC_ERROR_RETRY_INTERVAL,
+        useErrorBoundary: true,
+        suspense: false,
       },
       mutations: {},
     },
