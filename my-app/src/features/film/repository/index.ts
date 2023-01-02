@@ -62,7 +62,7 @@ export class FilmRepository implements FilmFactory {
         return {
           before,
           data,
-          after: beforeCursor,
+          after,
         }
       }
       if (afterCursor) {
@@ -81,7 +81,7 @@ export class FilmRepository implements FilmFactory {
           })
         )
         return {
-          before: afterCursor,
+          before,
           data,
           after,
         }

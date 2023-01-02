@@ -13,7 +13,6 @@ const usePagination = () => {
   const activePagination = useRecoilValue(paginationState)
 
   const variables = useMemo(() => {
-    console.log(activePagination)
     return {
       beforeCursor:
         activePagination.mode === ProgressType.PREV
