@@ -12,6 +12,8 @@ import { ArrowLeft } from 'phosphor-react'
 import { FallbackError } from '@/components/fallback/FallbackError'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
+import CollectionHistory from '@/features/film/components/CollectionHistory'
+import DocumentHistory from '@/features/film/components/DocumentHistory'
 import useDeleteFilmHook from '@/features/film/hooks/delete.hook'
 import useFindFilmHook from '@/features/film/hooks/id.hook'
 import useSidebar from '@/features/film/hooks/useSidebar'
@@ -79,10 +81,11 @@ const FilmPage = () => {
     if (error) {
       return (
         <FallbackError
+          status={error.requestResult.statusCode}
           message={error.message}
           iconSize={40}
           refetch={() => {
-            queryClient.removeQueries([FILM_KEY])
+            queryClient.removeQueries([FILM_KEY, filmId as string])
             refetch()
           }}
         />
@@ -144,14 +147,23 @@ const FilmPage = () => {
       <Divider />
       <Spacer />
       {renderContent({ data, error, refetch })}
-      <Spacer />
-      <Divider />
-      <Spacer />
-      <Button variant='solid' color='danger' fullWidth onClick={handleDelete}>
-        Delete Film
-      </Button>
-      {/* <DocumentHistory />
-      <CollectionHistory /> */}
+      {!error && (
+        <>
+          <Spacer />
+          <Divider />
+          <Spacer />
+          <Button
+            variant='solid'
+            color='danger'
+            fullWidth
+            onClick={handleDelete}
+          >
+            Delete Film
+          </Button>
+          <DocumentHistory />
+          <CollectionHistory />
+        </>
+      )}
     </Box>
   )
 }

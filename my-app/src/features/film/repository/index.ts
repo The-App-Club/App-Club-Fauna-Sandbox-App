@@ -130,13 +130,11 @@ export class FilmRepository implements FilmFactory {
   }
   async find({ id }: { id: string }): Promise<FaunaBackendResponse<FilmData>> {
     try {
-      console.log(id)
       const data: FaunaBackendResponse<FilmData> = await this.client.query(
         q.Get(q.Ref(q.Collection('shows'), id))
       )
       return data
     } catch (error) {
-      console.log(error)
       throw error
     }
   }

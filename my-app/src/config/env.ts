@@ -8,10 +8,10 @@ const env = envsafe({
     default: 1,
   }),
   NEXT_PUBLIC_ERROR_RETRY_COUNT: num({
-    default: 2,
+    default: 0,
   }),
   NEXT_PUBLIC_ERROR_RETRY_INTERVAL: num({
-    default: 300000,
+    default: 300,
   }),
 })
 

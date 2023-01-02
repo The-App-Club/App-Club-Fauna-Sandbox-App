@@ -16,6 +16,7 @@ import { FallbackDataEmpty } from '@/components/fallback/FallbackDataEmpty'
 import { FallbackError } from '@/components/fallback/FallbackError'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
+import CollectionHistory from '@/features/film/components/CollectionHistory'
 import useDeleteFilmHook from '@/features/film/hooks/delete.hook'
 import useFilmListUpHook from '@/features/film/hooks/listUp.hook'
 import { FILM_KEY, FilmData } from '@/features/film/types'
@@ -255,6 +256,7 @@ const FilmsPage = () => {
         </Button>
       </Box>
       <Spacer />
+      <CollectionHistory />
     </Box>
   )
 }
