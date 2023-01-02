@@ -5,7 +5,11 @@ import { FaunaDBClient, q } from '@/fauna/config'
 import { FilmFactory } from '@/features/film/facotry'
 import { FilmForm } from '@/features/film/stores/filmForm'
 import { FilmData } from '@/features/film/types'
-import { FaunaBackendResponse } from '@/types/response'
+import {
+  FaunaBackendCollectionHistoryResponse,
+  FaunaBackendDocumentHistoryResponse,
+  FaunaBackendResponse,
+} from '@/types/response'
 
 export class FilmRepository implements FilmFactory {
   private client: FaunaDBClient
@@ -18,6 +22,45 @@ export class FilmRepository implements FilmFactory {
       port: 443,
       scheme: 'https',
     })
+  }
+  async historyCollection({
+    collectionName,
+  }: {
+    collectionName: string
+  }): Promise<FaunaBackendCollectionHistoryResponse[]> {
+    try {
+      const {
+        data,
+        after,
+      }: {
+        data: FaunaBackendCollectionHistoryResponse[]
+        after: FaunaBackendCollectionHistoryResponse
+      } = await this.client.query(
+        q.Paginate(q.Events(q.Documents(q.Collection(collectionName))))
+      )
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+  async historyDocument({
+    collectionName,
+    documentId,
+  }: {
+    collectionName: string
+    documentId: string
+  }): Promise<FaunaBackendDocumentHistoryResponse<FilmData>[]> {
+    try {
+      const {
+        data,
+      }: { data: FaunaBackendDocumentHistoryResponse<FilmData>[] } =
+        await this.client.query(
+          q.Paginate(q.Events(q.Ref(q.Collection(collectionName), documentId)))
+        )
+      return data
+    } catch (error) {
+      throw error
+    }
   }
   async listUp(): Promise<FaunaBackendResponse<FilmData>[]> {
     try {
