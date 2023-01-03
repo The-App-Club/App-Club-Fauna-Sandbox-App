@@ -7,11 +7,10 @@ import { Box, Button, Divider, Typography } from '@mui/joy'
 import { arrange, desc, tidy } from '@tidyjs/tidy'
 
 import Spacer from '@/components/ui/Spacer'
+import CollectionHistoryContent from '@/features/film/components/CollectionHistoryContent'
 import useHistoryCollectionLoadMoreHook from '@/features/film/hooks/historyCollectionLoadMore.hook'
 import useLoadMore from '@/features/film/hooks/useLoadMore'
 import useQueryCache from '@/features/film/hooks/useQueryCache'
-
-import CollectionHistoryContent from './CollectionHistoryContent'
 
 const CollectionHistoryLoadMore = () => {
   const { variables, setLoadMore } = useLoadMore()
