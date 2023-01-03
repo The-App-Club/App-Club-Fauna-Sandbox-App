@@ -19,6 +19,12 @@ const headerMenus: HeaderMenu[] = [
     url: '/load-more',
     canonicalURL: null,
   },
+  {
+    id: 4,
+    name: 'Neat Pagination',
+    url: '/neat-pagination',
+    canonicalURL: null,
+  },
 ]
 
 export { headerMenus }

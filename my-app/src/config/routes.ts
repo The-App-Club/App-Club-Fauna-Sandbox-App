@@ -20,6 +20,10 @@ const routes = [
     pathname: '/load-more',
     headerMenuName: 'LoadMore',
   },
+  {
+    pathname: '/neat-pagination',
+    headerMenuName: 'Neat Pagination',
+  },
 ]
 
 const matchedActivePage = (currentPathname: string): Route | undefined => {
