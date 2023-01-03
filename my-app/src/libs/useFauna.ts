@@ -51,12 +51,6 @@ const useFauna = (collectionName?: string) => {
             }
 
             console.log('[set]', e)
-
-            const response = await filmFactory.historyCollection({
-              collectionName,
-            })
-
-            console.log(response)
           })
           .on('error', (e) => {
             console.log('[error]', e)

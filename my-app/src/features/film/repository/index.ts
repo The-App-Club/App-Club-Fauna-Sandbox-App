@@ -28,6 +28,60 @@ export class FilmRepository implements FilmFactory {
       },
     })
   }
+  async historyCollectionLoadMore({
+    collectionName,
+    size,
+    afterCursor,
+  }: {
+    collectionName: string
+    size: number
+    afterCursor?: Cursor
+  }): Promise<{
+    data: FaunaBackendCollectionHistoryResponse[]
+    after: Cursor
+  }> {
+    try {
+      if (afterCursor) {
+        const {
+          before,
+          data,
+          after,
+        }: {
+          before: Cursor
+          data: FaunaBackendCollectionHistoryResponse[]
+          after: Cursor
+        } = await this.client.query(
+          q.Paginate(q.Events(q.Documents(q.Collection(collectionName))), {
+            size,
+            after: afterCursor,
+          })
+        )
+        return {
+          data,
+          after,
+        }
+      }
+      const {
+        before,
+        data,
+        after,
+      }: {
+        before: Cursor
+        data: FaunaBackendCollectionHistoryResponse[]
+        after: Cursor
+      } = await this.client.query(
+        q.Paginate(q.Events(q.Documents(q.Collection(collectionName))), {
+          size,
+        })
+      )
+      return {
+        data,
+        after,
+      }
+    } catch (error) {
+      throw error
+    }
+  }
   async historyCollection({
     collectionName,
     size,

@@ -16,6 +16,10 @@ const routes = [
     pathname: '/collection-history',
     headerMenuName: 'コレクションヒストリー',
   },
+  {
+    pathname: '/load-more',
+    headerMenuName: 'LoadMore',
+  },
 ]
 
 const matchedActivePage = (currentPathname: string): Route | undefined => {

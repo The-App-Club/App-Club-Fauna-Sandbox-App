@@ -5,7 +5,7 @@ const env = envsafe({
     default: process.env.NEXT_PUBLIC_FAUNADB_SECRET,
   }),
   NEXT_PUBLIC_DEBUG_FLG: num({
-    default: 1,
+    default: 0,
   }),
   NEXT_PUBLIC_ERROR_RETRY_COUNT: num({
     default: 0,

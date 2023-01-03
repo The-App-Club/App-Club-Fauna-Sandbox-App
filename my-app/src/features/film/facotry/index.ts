@@ -43,6 +43,18 @@ export interface FilmFactory {
     data: FaunaBackendCollectionHistoryResponse[]
     after: Cursor
   }>
+  historyCollectionLoadMore({
+    collectionName,
+    size,
+    afterCursor,
+  }: {
+    collectionName: string
+    size: number
+    afterCursor?: Cursor
+  }): Promise<{
+    data: FaunaBackendCollectionHistoryResponse[]
+    after: Cursor
+  }>
 }
 
 export const factory = {

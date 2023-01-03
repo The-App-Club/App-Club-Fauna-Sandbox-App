@@ -13,6 +13,12 @@ const headerMenus: HeaderMenu[] = [
     url: '/collection-history',
     canonicalURL: null,
   },
+  {
+    id: 3,
+    name: 'LoadMore',
+    url: '/load-more',
+    canonicalURL: null,
+  },
 ]
 
 export { headerMenus }
