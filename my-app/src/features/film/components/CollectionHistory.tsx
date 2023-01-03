@@ -16,6 +16,7 @@ import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
 import useHistoryCollectionHook from '@/features/film/hooks/historyCollection.hook'
 import usePagination from '@/features/film/hooks/usePagination'
+import useQueryCache from '@/features/film/hooks/useQueryCache'
 import { ProgressType } from '@/features/film/stores/pagination'
 import { FILM_COLLECTION_HISTORY_KEY } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
@@ -25,6 +26,8 @@ import { formatRelativeTime, yyyymmddhhmmss } from '@/utils/dateUtil'
 
 const CollectionHistory = () => {
   const { variables, setPagination } = usePagination()
+  const cachedData = useQueryCache(FILM_COLLECTION_HISTORY_KEY)
+  console.log(`[CollectionHistory]cachedData`, cachedData)
   const { data, error, refetch } = useHistoryCollectionHook({
     collectionName: 'shows',
     size: 10,

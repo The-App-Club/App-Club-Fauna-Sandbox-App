@@ -6,7 +6,9 @@ type LoadMoreShortHand = {
   after: Cursor
 }
 
-const useQueryCache = (): LoadMoreShortHand[] | undefined => {
+const useQueryCache = (
+  mainQueryKey: string
+): LoadMoreShortHand[] | undefined => {
   const queryCacheClient = queryClient.getQueryCache()
   const queries = queryCacheClient.findAll()
   if (queries.length === 0) {
@@ -14,7 +16,11 @@ const useQueryCache = (): LoadMoreShortHand[] | undefined => {
   }
   const cachedData: LoadMoreShortHand[] = []
   queries.forEach(({ queryKey }) => {
-    const data = queryClient.getQueryData(queryKey)
+    const data = queryClient.getQueryData(queryKey, {
+      predicate(query) {
+        return query.queryKey.includes(mainQueryKey)
+      },
+    })
     if (data) {
       cachedData.push(data as LoadMoreShortHand)
     }

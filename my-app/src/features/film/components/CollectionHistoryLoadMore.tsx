@@ -11,10 +11,12 @@ import CollectionHistoryContent from '@/features/film/components/CollectionHisto
 import useHistoryCollectionLoadMoreHook from '@/features/film/hooks/historyCollectionLoadMore.hook'
 import useLoadMore from '@/features/film/hooks/useLoadMore'
 import useQueryCache from '@/features/film/hooks/useQueryCache'
+import { FILM_COLLECTION_HISTORY_LOAD_MORE_KEY } from '@/features/film/types'
 
 const CollectionHistoryLoadMore = () => {
   const { variables, setLoadMore } = useLoadMore()
-  const cachedData = useQueryCache()
+  const cachedData = useQueryCache(FILM_COLLECTION_HISTORY_LOAD_MORE_KEY)
+  console.log(`[CollectionHistoryLoadMore]cachedData`, cachedData)
   const neatCachedData = useMemo(() => {
     if (!cachedData) {
       return
