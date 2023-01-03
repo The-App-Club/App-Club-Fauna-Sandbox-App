@@ -38,6 +38,7 @@
     "json-object-mapper": "^1.7.1",
     "next": "^12.3.4",
     "next-connect": "^0.13.0",
+    "next-superjson": "^0.0.4",
     "nextjs-progressbar": "^0.0.16",
     "nookies": "^2.5.2",
     "numbro": "^2.3.6",
