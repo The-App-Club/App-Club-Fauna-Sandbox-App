@@ -16,7 +16,6 @@ import { FILM_COLLECTION_HISTORY_LOAD_MORE_KEY } from '@/features/film/types'
 const CollectionHistoryLoadMore = () => {
   const { variables, setLoadMore } = useLoadMore()
   const cachedData = useQueryCache(FILM_COLLECTION_HISTORY_LOAD_MORE_KEY)
-  console.log(`[CollectionHistoryLoadMore]cachedData`, cachedData)
   const neatCachedData = useMemo(() => {
     if (!cachedData) {
       return

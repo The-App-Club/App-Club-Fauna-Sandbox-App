@@ -7,7 +7,7 @@ import { Cursor, FaunaBackendCollectionHistoryResponse } from '@/types/response'
 
 const filmFactory = factory.filmFactory()
 
-const useHistoryCollectionHook = ({
+const useHistoryCollectionPaginationHook = ({
   collectionName,
   size = 10,
   beforeCursor,
@@ -51,7 +51,11 @@ const useHistoryCollectionHook = ({
       },
     }
   )
-  return { data, error, refetch }
+  return {
+    data,
+    error,
+    refetch,
+  }
 }
 
-export default useHistoryCollectionHook
+export default useHistoryCollectionPaginationHook

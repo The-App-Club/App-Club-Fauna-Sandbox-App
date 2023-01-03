@@ -8,15 +8,13 @@ import { css } from '@emotion/react'
 import { Box, Button, Typography } from '@mui/joy'
 import { Link } from '@mui/joy'
 import { arrange, desc, tidy } from '@tidyjs/tidy'
-import { ArrowsClockwise } from 'phosphor-react'
 
 import { FallbackDataEmpty } from '@/components/fallback/FallbackDataEmpty'
 import { FallbackError } from '@/components/fallback/FallbackError'
 import { FallbackLoading } from '@/components/fallback/FallbackLoading'
 import Spacer from '@/components/ui/Spacer'
-import useHistoryCollectionHook from '@/features/film/hooks/historyCollection.hook'
+import useHistoryCollectionPaginationHook from '@/features/film/hooks/historyCollectionPagination.hook'
 import usePagination from '@/features/film/hooks/usePagination'
-import useQueryCache from '@/features/film/hooks/useQueryCache'
 import { ProgressType } from '@/features/film/stores/pagination'
 import { FILM_COLLECTION_HISTORY_KEY } from '@/features/film/types'
 import { queryClient } from '@/libs/queryClient'
@@ -26,18 +24,11 @@ import { formatRelativeTime, yyyymmddhhmmss } from '@/utils/dateUtil'
 
 const CollectionHistory = () => {
   const { variables, setPagination } = usePagination()
-  const cachedData = useQueryCache(FILM_COLLECTION_HISTORY_KEY)
-  console.log(`[CollectionHistory]cachedData`, cachedData)
-  const { data, error, refetch } = useHistoryCollectionHook({
+  const { data, error, refetch } = useHistoryCollectionPaginationHook({
     collectionName: 'shows',
     size: 10,
     ...variables,
   })
-
-  const handleRefresh = async (e: React.MouseEvent) => {
-    queryClient.removeQueries([FILM_COLLECTION_HISTORY_KEY])
-    await refetch({})
-  }
 
   const sortedData = useMemo(() => {
     if (!data) {
@@ -165,15 +156,6 @@ const CollectionHistory = () => {
           `}
         >
           Collection History
-          <ArrowsClockwise
-            size={32}
-            onClick={handleRefresh}
-            css={css`
-              :hover {
-                cursor: pointer;
-              }
-            `}
-          />
         </Typography>
       </Box>
       <Spacer />

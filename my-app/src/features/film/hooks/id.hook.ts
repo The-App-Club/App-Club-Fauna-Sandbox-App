@@ -13,13 +13,13 @@ const useFindFilmHook = ({ id }: { id: string }) => {
     ErrorData
   >([FILM_KEY, id], async () => await filmFactory.find({ id }), {
     onSuccess: function (data) {
-      console.log(`onSuccess`)
+      // console.log(`onSuccess`)
     },
     onError: function (error) {
       console.log(`onError`, error)
     },
     onSettled: function (data, error) {
-      console.log(`onSettled`)
+      // console.log(`onSettled`)
     },
   })
   return { data, error, refetch }
